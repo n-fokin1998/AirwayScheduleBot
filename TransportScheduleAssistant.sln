@@ -12,6 +12,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CodeAnalysis", "CodeAnalysi
 		TransportScheduleAssistant.ruleset = TransportScheduleAssistant.ruleset
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegrationProxy", "IntegrationProxy\IntegrationProxy.csproj", "{3CC66453-2E87-40E2-A17F-2CF85725FAEA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data", "Data\Data.csproj", "{4934EFFB-BDB5-4EF0-BDF1-A30DA8A0BEB7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -22,6 +26,14 @@ Global
 		{35144E70-ABEC-4033-B346-0724E2244F88}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{35144E70-ABEC-4033-B346-0724E2244F88}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{35144E70-ABEC-4033-B346-0724E2244F88}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3CC66453-2E87-40E2-A17F-2CF85725FAEA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3CC66453-2E87-40E2-A17F-2CF85725FAEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3CC66453-2E87-40E2-A17F-2CF85725FAEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3CC66453-2E87-40E2-A17F-2CF85725FAEA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4934EFFB-BDB5-4EF0-BDF1-A30DA8A0BEB7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4934EFFB-BDB5-4EF0-BDF1-A30DA8A0BEB7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4934EFFB-BDB5-4EF0-BDF1-A30DA8A0BEB7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4934EFFB-BDB5-4EF0-BDF1-A30DA8A0BEB7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

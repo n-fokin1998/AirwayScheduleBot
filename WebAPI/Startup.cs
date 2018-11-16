@@ -10,6 +10,7 @@ namespace TransportScheduleAssistant.WebAPI
     using Microsoft.AspNetCore.SpaServices.AngularCli;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
+    using TransportScheduleAssistant.IntegrationProxy.Models;
 
     /// <summary>
     /// Startup
@@ -36,6 +37,9 @@ namespace TransportScheduleAssistant.WebAPI
         /// <param name="services">services</param>
         public void ConfigureServices(IServiceCollection services)
         {
+            var config = Configuration.GetSection(nameof(YandexApiConfiguration)).Get<YandexApiConfiguration>();
+            services.AddSingleton(config);
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             services.AddSpaStaticFiles(configuration =>
