@@ -1,5 +1,5 @@
-﻿// <copyright file="YandexApiProxy.cs" company="PlaceholderCompany">
-// Copyright (c) PlaceholderCompany. All rights reserved.
+﻿// <copyright file="YandexApiProxy.cs" company="Kharkiv National Aerospace University">
+// Copyright (c) Kharkiv National Aerospace University. All rights reserved.
 // </copyright>
 
 namespace TransportScheduleAssistant.IntegrationProxy.Services

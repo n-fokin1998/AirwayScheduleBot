@@ -9,12 +9,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CodeAnalysis", "CodeAnalysi
 	ProjectSection(SolutionItems) = preProject
 		Directory.Build.props = Directory.Build.props
 		Directory.Build.targets = Directory.Build.targets
+		stylecop.json = stylecop.json
 		TransportScheduleAssistant.ruleset = TransportScheduleAssistant.ruleset
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegrationProxy", "IntegrationProxy\IntegrationProxy.csproj", "{3CC66453-2E87-40E2-A17F-2CF85725FAEA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IntegrationProxy", "IntegrationProxy\IntegrationProxy.csproj", "{3CC66453-2E87-40E2-A17F-2CF85725FAEA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data", "Data\Data.csproj", "{4934EFFB-BDB5-4EF0-BDF1-A30DA8A0BEB7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Data", "Data\Data.csproj", "{4934EFFB-BDB5-4EF0-BDF1-A30DA8A0BEB7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
