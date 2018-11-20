@@ -2,11 +2,11 @@
 // Copyright (c) Kharkiv National Aerospace University. All rights reserved.
 // </copyright>
 
-namespace TransportScheduleAssistant.IntegrationProxy.Interfaces
+namespace AirwaySchedule.Bot.IntegrationProxy.Interfaces
 {
     using System.Threading.Tasks;
-    using TransportScheduleAssistant.Data.Dto;
-    using TransportScheduleAssistant.Data.ViewModels;
+    using Bot.Data.Dto;
+    using Bot.Data.ViewModels;
 
     /// <summary>
     /// IYandexApiProxy
@@ -18,6 +18,6 @@ namespace TransportScheduleAssistant.IntegrationProxy.Interfaces
         /// </summary>
         /// <param name="requestParameters">requestParameters</param>
         /// <returns>ApiResponse</returns>
-        Task<ApiResponse> GetResponseAsync(ScheduleRequestParametersDto requestParameters);
+        Task<ApiResponse> GetResponseAsync(RequestParametersDto requestParameters);
     }
 }

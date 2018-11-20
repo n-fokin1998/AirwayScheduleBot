@@ -2,7 +2,7 @@
 // Copyright (c) Kharkiv National Aerospace University. All rights reserved.
 // </copyright>
 
-namespace TransportScheduleAssistant.IntegrationProxy.Models
+namespace AirwaySchedule.Bot.IntegrationProxy.Models
 {
     /// <summary>
     /// YandexApiConfiguration
@@ -20,13 +20,23 @@ namespace TransportScheduleAssistant.IntegrationProxy.Models
         public string BaseUrl { get; set; }
 
         /// <summary>
+        /// Resource
+        /// </summary>
+        public string Resource { get; set; }
+
+        /// <summary>
         /// Format
         /// </summary>
         public string Format { get; set; }
 
         /// <summary>
-        /// Lang
+        /// TransportType
         /// </summary>
-        public string Lang { get; set; }
+        public string TransportType { get; set; }
+
+        /// <summary>
+        /// System
+        /// </summary>
+        public string System { get; set; }
     }
 }

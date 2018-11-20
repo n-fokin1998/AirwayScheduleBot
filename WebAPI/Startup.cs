@@ -2,15 +2,16 @@
 // Copyright (c) Kharkiv National Aerospace University. All rights reserved.
 // </copyright>
 
-namespace TransportScheduleAssistant.WebAPI
+namespace AirwaySchedule.Bot.WebAPI
 {
+    using Bot.IntegrationProxy.Models;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.SpaServices.AngularCli;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
-    using TransportScheduleAssistant.IntegrationProxy.Models;
+    using Telegram.Bot;
 
     /// <summary>
     /// Startup
@@ -39,6 +40,11 @@ namespace TransportScheduleAssistant.WebAPI
         {
             var config = Configuration.GetSection(nameof(YandexApiConfiguration)).Get<YandexApiConfiguration>();
             services.AddSingleton(config);
+
+            var botClient = new TelegramBotClient(Configuration["TelegramBotConfiguration:Token"]);
+            botClient.SetWebhookAsync("fdg").Wait();
+
+            services.AddSingleton<ITelegramBotClient>(botClient);
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 

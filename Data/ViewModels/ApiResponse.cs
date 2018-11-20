@@ -2,7 +2,7 @@
 // Copyright (c) Kharkiv National Aerospace University. All rights reserved.
 // </copyright>
 
-namespace TransportScheduleAssistant.Data.ViewModels
+namespace AirwaySchedule.Bot.Data.ViewModels
 {
     /// <summary>
     /// ApiResponse

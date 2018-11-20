@@ -7,15 +7,17 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebAPI", "WebAPI\WebAPI.csp
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CodeAnalysis", "CodeAnalysis", "{CECD0AF6-DFE2-4CEC-9925-6277DB07022D}"
 	ProjectSection(SolutionItems) = preProject
+		AirwaySchedule.Bot.ruleset = AirwaySchedule.Bot.ruleset
 		Directory.Build.props = Directory.Build.props
 		Directory.Build.targets = Directory.Build.targets
 		stylecop.json = stylecop.json
-		TransportScheduleAssistant.ruleset = TransportScheduleAssistant.ruleset
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IntegrationProxy", "IntegrationProxy\IntegrationProxy.csproj", "{3CC66453-2E87-40E2-A17F-2CF85725FAEA}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Data", "Data\Data.csproj", "{4934EFFB-BDB5-4EF0-BDF1-A30DA8A0BEB7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BotProcessing", "BotProcessing\BotProcessing.csproj", "{FB291267-A09F-4A45-A60F-E7FD1040CB3D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,6 +37,10 @@ Global
 		{4934EFFB-BDB5-4EF0-BDF1-A30DA8A0BEB7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4934EFFB-BDB5-4EF0-BDF1-A30DA8A0BEB7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4934EFFB-BDB5-4EF0-BDF1-A30DA8A0BEB7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FB291267-A09F-4A45-A60F-E7FD1040CB3D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FB291267-A09F-4A45-A60F-E7FD1040CB3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FB291267-A09F-4A45-A60F-E7FD1040CB3D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FB291267-A09F-4A45-A60F-E7FD1040CB3D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,16 +1,15 @@
-﻿// <copyright file="ScheduleRequestParametersDto.cs" company="Kharkiv National Aerospace University">
+﻿// <copyright file="RequestParametersDto.cs" company="Kharkiv National Aerospace University">
 // Copyright (c) Kharkiv National Aerospace University. All rights reserved.
 // </copyright>
 
-namespace TransportScheduleAssistant.Data.Dto
+namespace AirwaySchedule.Bot.Data.Dto
 {
     using System;
-    using TransportScheduleAssistant.Data.Enums;
 
     /// <summary>
-    /// ScheduleRequestParametersDto
+    /// RequestParametersDto
     /// </summary>
-    public class ScheduleRequestParametersDto
+    public class RequestParametersDto
     {
         /// <summary>
         /// Departure
@@ -23,13 +22,13 @@ namespace TransportScheduleAssistant.Data.Dto
         public string Destination { get; set; }
 
         /// <summary>
-        /// Date
+        /// DateFrom
         /// </summary>
-        public DateTime Date { get; set; }
+        public DateTime DateFrom { get; set; }
 
         /// <summary>
-        /// TransportType
+        /// DateTo
         /// </summary>
-        public TransportType TransportType { get; set; }
+        public DateTime? DateTo { get; set; }
     }
 }

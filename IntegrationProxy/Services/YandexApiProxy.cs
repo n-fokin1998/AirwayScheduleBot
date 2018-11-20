@@ -2,13 +2,17 @@
 // Copyright (c) Kharkiv National Aerospace University. All rights reserved.
 // </copyright>
 
-namespace TransportScheduleAssistant.IntegrationProxy.Services
+namespace AirwaySchedule.Bot.IntegrationProxy.Services
 {
+    using System;
+    using System.Net;
     using System.Threading.Tasks;
-    using TransportScheduleAssistant.Data.Dto;
-    using TransportScheduleAssistant.Data.ViewModels;
-    using TransportScheduleAssistant.IntegrationProxy.Interfaces;
-    using TransportScheduleAssistant.IntegrationProxy.Models;
+    using Newtonsoft.Json;
+    using RestSharp;
+    using Bot.Data.Dto;
+    using Bot.Data.ViewModels;
+    using Bot.IntegrationProxy.Interfaces;
+    using Bot.IntegrationProxy.Models;
 
     /// <summary>
     /// YandexApiProxy
@@ -31,9 +35,43 @@ namespace TransportScheduleAssistant.IntegrationProxy.Services
         /// </summary>
         /// <param name="requestParameters">requestParameters</param>
         /// <returns>ApiResponse</returns>
-        public Task<ApiResponse> GetResponseAsync(ScheduleRequestParametersDto requestParameters)
+        public async Task<ApiResponse> GetResponseAsync(RequestParametersDto requestParameters)
         {
-            throw new System.NotImplementedException();
+            var client = BuildClient();
+            var request = BuildRequest(requestParameters);
+
+            var response = await client.ExecuteGetTaskAsync(request);
+
+            if (response.StatusCode != HttpStatusCode.OK)
+            {
+                throw response.ErrorException;
+            }
+
+            return JsonConvert.DeserializeObject<ApiResponse>(response.Content);
+        }
+
+        private IRestClient BuildClient()
+        {
+            var uriBuilder = new UriBuilder(_configuration.BaseUrl);
+            var client = new RestClient(uriBuilder.Uri);
+
+            return client;
+        }
+
+        private IRestRequest BuildRequest(RequestParametersDto requestParameters)
+        {
+            var request = new RestRequest(_configuration.Resource);
+
+            request.AddHeader("Authorization", _configuration.ApiKey);
+            request.AddQueryParameter("format", _configuration.Format);
+            request.AddQueryParameter("from", requestParameters.Departure);
+            request.AddQueryParameter("to", requestParameters.Destination);
+            request.AddQueryParameter("lang", "ru_RU");
+            request.AddQueryParameter("transport_types", _configuration.TransportType);
+            request.AddQueryParameter("system", _configuration.System);
+            request.AddQueryParameter("date", requestParameters.DateFrom.ToShortDateString());
+
+            return request;
         }
     }
 }

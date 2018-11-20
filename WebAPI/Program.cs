@@ -2,7 +2,7 @@
 // Copyright (c) Kharkiv National Aerospace University. All rights reserved.
 // </copyright>
 
-namespace TransportScheduleAssistant.WebAPI
+namespace AirwaySchedule.Bot.WebAPI
 {
     using Microsoft.AspNetCore;
     using Microsoft.AspNetCore.Hosting;

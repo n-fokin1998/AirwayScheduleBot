@@ -10,18 +10,28 @@
 
     <!-- Set this to true if you enable server-side prerendering -->
     <BuildServerSideRenderer>false</BuildServerSideRenderer>
-    <AssemblyName>TransportScheduleAssistant.WebAPI</AssemblyName>
-    <RootNamespace>TransportScheduleAssistant.WebAPI</RootNamespace>
+    <AssemblyName>AirwaySchedule.Bot.WebAPI</AssemblyName>
+    <RootNamespace>AirwaySchedule.Bot.WebAPI</RootNamespace>
     <Configurations>Debug;Release</Configurations>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <CodeAnalysisRuleSet>..\AirwaySchedule.Bot.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <CodeAnalysisRuleSet>..\AirwaySchedule.Bot.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="2.1.1" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.1" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.0.2">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Telegram.Bot" Version="14.10.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -31,10 +41,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <ProjectReference Include="..\BotProcessing\BotProcessing.csproj" />
     <ProjectReference Include="..\IntegrationProxy\IntegrationProxy.csproj" />
   </ItemGroup>
 
