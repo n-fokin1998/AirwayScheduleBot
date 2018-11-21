@@ -4,13 +4,16 @@
 
 namespace AirwaySchedule.Bot.WebAPI
 {
-    using Bot.IntegrationProxy.Models;
+    using AirwaySchedule.Bot.WebAPI.Filters;
+    using AirwaySchedule.Bot.WebAPI.Infrastructure.DI;
+    using IntegrationProxy.Models.Response;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.SpaServices.AngularCli;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
     using Telegram.Bot;
 
     /// <summary>
@@ -18,12 +21,16 @@ namespace AirwaySchedule.Bot.WebAPI
     /// </summary>
     public class Startup
     {
+        private readonly ILogger<Startup> _logger;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Startup"/> class.
         /// </summary>
         /// <param name="configuration">configuration</param>
-        public Startup(IConfiguration configuration)
+        /// <param name="logger">logger</param>
+        public Startup(IConfiguration configuration, ILogger<Startup> logger)
         {
+            _logger = logger;
             Configuration = configuration;
         }
 
@@ -42,11 +49,17 @@ namespace AirwaySchedule.Bot.WebAPI
             services.AddSingleton(config);
 
             var botClient = new TelegramBotClient(Configuration["TelegramBotConfiguration:Token"]);
-            botClient.SetWebhookAsync("fdg").Wait();
+            botClient.SetWebhookAsync("url").Wait();
+            _logger.LogInformation("Created bot client with Id: " + botClient.BotId);
 
             services.AddSingleton<ITelegramBotClient>(botClient);
+            services.AddServices();
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddMvc(options =>
+            {
+                options.Filters.Add(typeof(ServiceExceptionFilterAttribute));
+            })
+            .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             services.AddSpaStaticFiles(configuration =>
             {

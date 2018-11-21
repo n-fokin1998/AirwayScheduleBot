@@ -4,10 +4,8 @@
 
 namespace AirwaySchedule.Bot.WebAPI.Controllers
 {
-    using AirwaySchedule.Bot.BotProcessing.Extensions;
     using AirwaySchedule.Bot.BotProcessing.Interfaces;
     using Microsoft.AspNetCore.Mvc;
-    using Telegram.Bot;
     using Telegram.Bot.Types;
     using Telegram.Bot.Types.Enums;
 
@@ -35,16 +33,10 @@ namespace AirwaySchedule.Bot.WebAPI.Controllers
         [HttpPost]
         public void Update([FromBody]Update update)
         {
-            if (update == null || update.Message.Type != MessageType.Text)
+            if (update != null && update.Message.Type == MessageType.Text)
             {
-                return;
+                _commandInvokerService.ExecuteCommand(update.Message.Chat.Id, update.Message.Text);
             }
-
-            var message = update.Message;
-            var commandName = message.Text.GetCommandName();
-            var commandText = message.Text.GetCommandText();
-
-            _commandInvokerService.ExecuteCommandAsync(message.Chat.Id, commandName, commandText);
         }
     }
 }

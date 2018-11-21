@@ -15,7 +15,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Services\Commands\" />
+    <ProjectReference Include="..\Data\Data.csproj" />
+    <ProjectReference Include="..\IntegrationProxy\IntegrationProxy.csproj" />
   </ItemGroup>
 
 </Project>

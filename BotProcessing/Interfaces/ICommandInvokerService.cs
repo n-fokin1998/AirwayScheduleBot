@@ -12,11 +12,10 @@ namespace AirwaySchedule.Bot.BotProcessing.Interfaces
     public interface ICommandInvokerService
     {
         /// <summary>
-        /// ExecuteCommandAsync
+        /// ExecuteCommand
         /// </summary>
         /// <param name="chatId">chatId</param>
-        /// <param name="commandName">commandName</param>
-        /// <param name="commandText">commandText</param>
-        void ExecuteCommandAsync(long chatId, string commandName, string commandText);
+        /// <param name="message">message</param>
+        void ExecuteCommand(long chatId, string message);
     }
 }

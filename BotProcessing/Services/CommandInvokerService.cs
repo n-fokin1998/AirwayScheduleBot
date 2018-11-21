@@ -5,6 +5,7 @@
 namespace AirwaySchedule.Bot.BotProcessing.Services
 {
     using System.Collections.Generic;
+    using AirwaySchedule.Bot.BotProcessing.Extensions;
     using AirwaySchedule.Bot.BotProcessing.Interfaces;
     using AirwaySchedule.Bot.BotProcessing.Interfaces.Commands;
 
@@ -38,13 +39,15 @@ namespace AirwaySchedule.Bot.BotProcessing.Services
         }
 
         /// <summary>
-        /// ExecuteCommandAsync
+        /// ExecuteCommand
         /// </summary>
         /// <param name="chatId">chatId</param>
-        /// <param name="commandName">commandName</param>
-        /// <param name="commandText">commandText</param>
-        public async void ExecuteCommandAsync(long chatId, string commandName, string commandText)
+        /// <param name="message">message</param>
+        public async void ExecuteCommand(long chatId, string message)
         {
+            var commandName = message.GetCommandName();
+            var commandText = message.GetCommandText();
+
             var commandService = GetCommandService(commandName);
 
             if (commandService != null)

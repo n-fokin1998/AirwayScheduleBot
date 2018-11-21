@@ -15,8 +15,8 @@ namespace AirwaySchedule.Bot.BotProcessing.Interfaces.Commands
         /// ExecuteAsync
         /// </summary>
         /// <param name="chatId">chatId</param>
-        /// <param name="message">message</param>
+        /// <param name="commandText">commandText</param>
         /// <returns>Task</returns>
-        Task ExecuteAsync(long chatId, string message);
+        Task ExecuteAsync(long chatId, string commandText);
     }
 }

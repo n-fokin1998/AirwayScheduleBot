@@ -7,12 +7,12 @@ namespace AirwaySchedule.Bot.IntegrationProxy.Services
     using System;
     using System.Net;
     using System.Threading.Tasks;
+    using Bot.Data.Dto;
+    using Bot.IntegrationProxy.Interfaces;
+    using Microsoft.Extensions.Logging;
+    using Models.Response;
     using Newtonsoft.Json;
     using RestSharp;
-    using Bot.Data.Dto;
-    using Bot.Data.ViewModels;
-    using Bot.IntegrationProxy.Interfaces;
-    using Bot.IntegrationProxy.Models;
 
     /// <summary>
     /// YandexApiProxy
@@ -20,14 +20,17 @@ namespace AirwaySchedule.Bot.IntegrationProxy.Services
     public class YandexApiProxy : IYandexApiProxy
     {
         private readonly YandexApiConfiguration _configuration;
+        private readonly ILogger<YandexApiConfiguration> _logger;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="YandexApiProxy"/> class.
         /// </summary>
         /// <param name="configuration">configuration</param>
-        public YandexApiProxy(YandexApiConfiguration configuration)
+        /// <param name="logger">logger</param>
+        public YandexApiProxy(YandexApiConfiguration configuration, ILogger<YandexApiConfiguration> logger)
         {
             _configuration = configuration;
+            _logger = logger;
         }
 
         /// <summary>
@@ -44,7 +47,9 @@ namespace AirwaySchedule.Bot.IntegrationProxy.Services
 
             if (response.StatusCode != HttpStatusCode.OK)
             {
-                throw response.ErrorException;
+                var ex = response.ErrorException;
+                _logger.LogError(ex, "Error during request to yandex api");
+                throw ex;
             }
 
             return JsonConvert.DeserializeObject<ApiResponse>(response.Content);

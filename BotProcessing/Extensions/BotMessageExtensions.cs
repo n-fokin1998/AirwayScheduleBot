@@ -28,5 +28,15 @@ namespace AirwaySchedule.Bot.BotProcessing.Extensions
         {
             return message.Substring(message.IndexOf(' '));
         }
+
+        /// <summary>
+        /// GetCommandParameters
+        /// </summary>
+        /// <param name="message">message</param>
+        /// <returns>string array</returns>
+        public static string[] GetCommandParameters(this string message)
+        {
+            return message.Replace(" ", string.Empty).Split(',');
+        }
     }
 }

@@ -6,7 +6,7 @@ namespace AirwaySchedule.Bot.IntegrationProxy.Interfaces
 {
     using System.Threading.Tasks;
     using Bot.Data.Dto;
-    using Bot.Data.ViewModels;
+    using Models.Response;
 
     /// <summary>
     /// IYandexApiProxy
