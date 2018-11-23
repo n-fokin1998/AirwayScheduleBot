@@ -5,6 +5,7 @@
 namespace AirwaySchedule.Bot.BotProcessing.Services.Commands
 {
     using System.Threading.Tasks;
+    using AirwaySchedule.Bot.BotProcessing.Infrastructure;
     using AirwaySchedule.Bot.BotProcessing.Interfaces.Commands;
     using AirwaySchedule.Bot.DataAccess.Entities;
     using AirwaySchedule.Bot.DataAccess.Interfaces;
@@ -15,6 +16,8 @@ namespace AirwaySchedule.Bot.BotProcessing.Services.Commands
     /// </summary>
     public class PlaneDetailsCommandService : IPlaneDetailsCommandService
     {
+        private const string PlaneNotFoundErrorMessage = "Самолёт не найден";
+
         private readonly IUnitOfWork _unitOfWork;
         private readonly ITelegramBotClient _telegramBotClient;
 
@@ -38,6 +41,11 @@ namespace AirwaySchedule.Bot.BotProcessing.Services.Commands
         public async Task ExecuteAsync(long chatId, string commandText)
         {
             var responseModel = _unitOfWork.Planes.FindByName(commandText);
+
+            if (responseModel == null)
+            {
+                throw new BotCommandException(chatId, PlaneNotFoundErrorMessage);
+            }
 
             await _telegramBotClient.SendTextMessageAsync(chatId, BuildResponseBody(responseModel));
         }
