@@ -14,6 +14,7 @@ namespace AirwaySchedule.Bot.WebAPI
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
+    using Swashbuckle.AspNetCore.Swagger;
     using Telegram.Bot;
 
     /// <summary>
@@ -49,17 +50,24 @@ namespace AirwaySchedule.Bot.WebAPI
             services.AddSingleton(config);
 
             var botClient = new TelegramBotClient(Configuration["TelegramBotConfiguration:Token"]);
-            botClient.SetWebhookAsync("url").Wait();
+
+            // botClient.SetWebhookAsync("url").Wait();
             _logger.LogInformation("Created bot client with Id: " + botClient.BotId);
 
+            var connectionString = Configuration.GetConnectionString("AirwayScheduleDatabase");
+
             services.AddSingleton<ITelegramBotClient>(botClient);
-            services.AddServices();
+            services.AddServices(connectionString);
 
             services.AddMvc(options =>
             {
                 options.Filters.Add(typeof(ServiceExceptionFilterAttribute));
             })
             .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Info { Title = "My API", Version = "v1" });
+            });
 
             services.AddSpaStaticFiles(configuration =>
             {
@@ -77,6 +85,12 @@ namespace AirwaySchedule.Bot.WebAPI
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+
+                app.UseSwagger();
+                app.UseSwaggerUI(c =>
+                {
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+                });
             }
             else
             {
