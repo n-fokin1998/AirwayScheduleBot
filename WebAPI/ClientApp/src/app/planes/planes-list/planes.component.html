@@ -1,0 +1,28 @@
+<div class="page-header">
+  <div class="float-left page-header__title">Planes</div>
+  <div class="float-right page-header__link"><a routerLink="">Add plane</a></div>
+  <div class="clearfix"></div>
+</div>
+<hr />
+<div>
+  <table class="table">
+    <thead class="thead-light">
+      <tr>
+        <th scope="col">Id</th>
+        <th scope="col">Name</th>
+        <th scope="col">Seats</th>
+        <th scope="col">Range, km</th>
+        <th scope="col">Speed, km/h</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let plane of planesList;">
+        <td>{{ plane.planeId }}</td>
+        <td>{{ plane.name }}</td>
+        <td>{{ plane.seats }}</td>
+        <td>{{ plane.range }}</td>
+        <td>{{ plane.speed }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

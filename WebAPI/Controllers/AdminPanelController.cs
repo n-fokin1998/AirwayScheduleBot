@@ -31,7 +31,7 @@ namespace AirwaySchedule.Bot.WebAPI.Controllers
         /// <param name="searchKey">searchKey</param>
         /// <param name="pagingInfo">pagingInfo</param>
         /// <returns>IActionResult</returns>
-        [HttpGet]
+        [HttpGet("planes")]
         public IActionResult Get(string searchKey, PagingInfo pagingInfo)
         {
             var filteredPlanes = _planeService.GetFilteredPlanes(searchKey, pagingInfo);

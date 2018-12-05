@@ -1,0 +1,30 @@
+.top-header a {
+    text-decoration: underline;
+}
+.header {
+    font-size: 25px;
+    background-color: #215B7D;
+    color: #fff;
+}
+.sidebar {
+    border-right: 1px solid #ccc;
+    background-color: #323130;
+}
+.main-content {
+    width: 100%;
+    min-height: 100vh;
+}
+.list-group-item {
+    background-color: transparent;
+    color: #fff;
+    border-color: grey;
+    padding-left: 30px; 
+    font-size: 15px;
+}
+.list-group-item:hover {
+    background-color: #3E3D3C;
+    cursor: pointer;
+}
+.page-content {
+    padding-top: 30px !important;
+}
