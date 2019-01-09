@@ -4,7 +4,7 @@ import { PlanesComponent } from './planes-list/planes.component';
 
 const routes: Routes = [
     {
-        path: 'planes',
+        path: '',
         component: PlanesComponent
     }
 ];

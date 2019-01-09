@@ -33,7 +33,7 @@ namespace AirwaySchedule.Bot.DataAccess.Filter.Filters
         public IQueryable<Plane> Apply(IQueryable<Plane> input)
         {
             _pagingInfo.TotalCount = input.Count();
-            var result = input.Skip(_pagingInfo.Skip).Take(_pagingInfo.Top);
+            var result = input.Skip((_pagingInfo.PageNumber - 1) * _pagingInfo.PageSize).Take(_pagingInfo.PageSize);
 
             return result;
         }

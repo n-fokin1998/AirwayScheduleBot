@@ -3,19 +3,40 @@ import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
-import { HomeModule } from './home/home.module';
-import { PlanesModule } from './planes/planes.module';
 import { LayoutComponent } from './layout/layout.component';
 import { RouterModule } from '@angular/router';
+import { LayoutModule } from './layout/layout.module';
 
 @NgModule({
-  declarations: [AppComponent, LayoutComponent],
+  declarations: [AppComponent],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     HttpClientModule,
-    HomeModule,
-    PlanesModule,
-    RouterModule.forRoot([])
+    LayoutModule,
+    RouterModule.forRoot([
+      { 
+        path: 'planes',
+        component: LayoutComponent,
+        children: [
+          { 
+            path: '', 
+            loadChildren: './planes/planes.module#PlanesModule',
+            pathMatch: 'full' 
+          },
+        ]
+      },
+      { 
+        path: '',
+        component: LayoutComponent,
+        children: [
+          { 
+            path: '', 
+            loadChildren: 'app/home/home.module#HomeModule',
+            pathMatch: 'full' 
+          },
+        ]
+      }
+    ])
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -29,11 +29,15 @@ namespace AirwaySchedule.Bot.WebAPI.Controllers
         /// Get
         /// </summary>
         /// <param name="searchKey">searchKey</param>
-        /// <param name="pagingInfo">pagingInfo</param>
+        /// <param name="page">page</param>
         /// <returns>IActionResult</returns>
         [HttpGet("planes")]
-        public IActionResult Get(string searchKey, PagingInfo pagingInfo)
+        public IActionResult Get(string searchKey, int page = 1)
         {
+            var pagingInfo = new PagingInfo
+            {
+                PageNumber = page
+            };
             var filteredPlanes = _planeService.GetFilteredPlanes(searchKey, pagingInfo);
 
             return Json(new

@@ -5,10 +5,21 @@
 </div>
 <hr />
 <div>
+  <form role="form" (ngSubmit)="applySearch()" autocomplete="off">
+    <div class="input-group mb-3 search-form float-left">
+      <input type="text" class="form-control" placeholder="Search" aria-describedby="searchButton" name="searchKey" [(ngModel)]="searchKey">
+      <div class="input-group-append">
+        <button class="btn btn-outline-secondary" type="submit" id="searchButton"><i class="fa fa-search"></i></button>
+      </div>
+    </div>
+    <div class="float-right">
+      <ngb-pagination [collectionSize]="totalItems" [pageSize]="15" [(page)]="page" (pageChange)="applyPagination($event)"></ngb-pagination>
+    </div>
+  </form>
   <table class="table">
     <thead class="thead-light">
       <tr>
-        <th scope="col">Id</th>
+        <th scope="col">#</th>
         <th scope="col">Name</th>
         <th scope="col">Seats</th>
         <th scope="col">Range, km</th>

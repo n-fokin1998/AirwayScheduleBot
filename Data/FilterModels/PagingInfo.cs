@@ -13,14 +13,14 @@ namespace AirwaySchedule.Bot.Data.FilterModels
     public class PagingInfo
     {
         /// <summary>
-        /// Skip
+        /// PageNumber
         /// </summary>
-        public int Skip { get; set; }
+        public int PageNumber { get; set; }
 
         /// <summary>
-        /// Top
+        /// PageSize
         /// </summary>
-        public int Top { get; set; } = GlobalParameters.DefaultPageSize;
+        public int PageSize { get; set; } = GlobalParameters.DefaultPageSize;
 
         /// <summary>
         /// TotalCount
@@ -30,6 +30,6 @@ namespace AirwaySchedule.Bot.Data.FilterModels
         /// <summary>
         /// TotalPages
         /// </summary>
-        public int TotalPages => (int)Math.Ceiling((decimal)TotalCount / Top);
+        public int TotalPages => (int)Math.Ceiling((decimal)TotalCount / PageSize);
     }
 }
