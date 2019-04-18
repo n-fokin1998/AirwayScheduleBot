@@ -7,7 +7,7 @@ namespace AirwaySchedule.Bot.DataAccess.Repositories
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using AirwaySchedule.Bot.Data.FilterModels;
+    using AirwaySchedule.Bot.Common.FilterModels;
     using AirwaySchedule.Bot.DataAccess.Entities;
     using AirwaySchedule.Bot.DataAccess.Interfaces;
     using AirwaySchedule.Bot.DataAccess.Interfaces.Filter;

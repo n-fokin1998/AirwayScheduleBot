@@ -4,7 +4,7 @@
 
 namespace AirwaySchedule.Bot.DataAccess.Interfaces.Filter
 {
-    using AirwaySchedule.Bot.Data.FilterModels;
+    using AirwaySchedule.Bot.Common.FilterModels;
 
     /// <summary>
     /// IFilterPipelineBuilder

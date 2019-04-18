@@ -5,7 +5,7 @@
 namespace AirwaySchedule.Bot.WebAPI.Controllers
 {
     using AirwaySchedule.Bot.AdminPanelProcessing.Interfaces;
-    using AirwaySchedule.Bot.Data.FilterModels;
+    using AirwaySchedule.Bot.Common.FilterModels;
     using Microsoft.AspNetCore.Mvc;
 
     /// <summary>

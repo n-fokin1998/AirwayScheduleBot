@@ -6,8 +6,8 @@ namespace AirwaySchedule.Bot.AdminPanelProcessing.Services
 {
     using System.Collections.Generic;
     using AirwaySchedule.Bot.AdminPanelProcessing.Interfaces;
-    using AirwaySchedule.Bot.Data.Dto;
-    using AirwaySchedule.Bot.Data.FilterModels;
+    using Common.Models;
+    using AirwaySchedule.Bot.Common.FilterModels;
     using AirwaySchedule.Bot.DataAccess.Interfaces;
     using AutoMapper;
 
@@ -36,11 +36,11 @@ namespace AirwaySchedule.Bot.AdminPanelProcessing.Services
         /// <param name="searchKey">searchKey</param>
         /// <param name="pagingInfo">pagingInfo</param>
         /// <returns>IEnumerable</returns>
-        public IEnumerable<PlaneDto> GetFilteredPlanes(string searchKey, PagingInfo pagingInfo)
+        public IEnumerable<Plane> GetFilteredPlanes(string searchKey, PagingInfo pagingInfo)
         {
             var filteredPlanes = _unitOfWork.Planes.GetFilteredList(searchKey, pagingInfo);
 
-            return _mapper.Map<IEnumerable<PlaneDto>>(filteredPlanes);
+            return _mapper.Map<IEnumerable<Plane>>(filteredPlanes);
         }
     }
 }

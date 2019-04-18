@@ -5,9 +5,13 @@
 namespace AirwaySchedule.Bot.BotProcessing.Services
 {
     using System.Collections.Generic;
+    using System.Threading.Tasks;
+
     using AirwaySchedule.Bot.BotProcessing.Extensions;
-    using AirwaySchedule.Bot.BotProcessing.Interfaces;
-    using AirwaySchedule.Bot.BotProcessing.Interfaces.Commands;
+    using Interfaces.Services;
+    using Interfaces.Services.Commands;
+    using AirwaySchedule.Bot.Common.Utils;
+    using AirwaySchedule.Bot.BotProcessing.Models;
 
     /// <summary>
     /// CommandInvokerService
@@ -20,39 +24,39 @@ namespace AirwaySchedule.Bot.BotProcessing.Services
         /// Initializes a new instance of the <see cref="CommandInvokerService"/> class.
         /// </summary>
         /// <param name="scheduleCommandService">scheduleCommandService</param>
-        /// <param name="languageCommandService">languageCommandService</param>
         /// <param name="planeDetailsCommandService">planeDetailsCommandService</param>
-        /// <param name="emailCommandService">emailCommandService</param>
         public CommandInvokerService(
             IScheduleCommandService scheduleCommandService,
-            ILanguageCommandService languageCommandService,
-            IPlaneDetailsCommandService planeDetailsCommandService,
-            IEmailCommandService emailCommandService)
+            IPlaneDetailsCommandService planeDetailsCommandService)
         {
             _commands = new Dictionary<string, ICommandService>
             {
-                { "/get", scheduleCommandService },
-                { "/language", languageCommandService },
-                { "/plane", planeDetailsCommandService },
-                { "/email", emailCommandService }
+                { CommandNames.ScheduleByIataCommand, scheduleCommandService },
+                { CommandNames.ScheduleByCityCommand, scheduleCommandService },
+                { CommandNames.ScheduleByAirportCommand, scheduleCommandService },
+                { CommandNames.PlaneDetailsCommand, planeDetailsCommandService }
             };
         }
 
         /// <summary>
-        /// ExecuteCommand
+        /// ExecuteCommandAsync
         /// </summary>
         /// <param name="chatId">chatId</param>
         /// <param name="message">message</param>
-        public async void ExecuteCommand(long chatId, string message)
+        /// <returns>Task</returns>
+        public async Task ExecuteCommandAsync(long chatId, string message)
         {
-            var commandName = message.GetCommandName();
-            var commandText = message.GetCommandText();
+            var command = new Command
+            {
+                Name = message.GetCommandName(),
+                Text = message.GetCommandText()
+            };
 
-            var commandService = GetCommandService(commandName);
+            var commandService = GetCommandService(command.Name);
 
             if (commandService != null)
             {
-                await commandService.ExecuteAsync(chatId, commandText);
+                await commandService.ExecuteAsync(chatId, command);
             }
         }
 

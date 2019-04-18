@@ -4,10 +4,16 @@
 
 namespace AirwaySchedule.Bot.WebAPI.Controllers
 {
-    using AirwaySchedule.Bot.BotProcessing.Interfaces;
+    using System.Threading.Tasks;
+
     using Microsoft.AspNetCore.Mvc;
+
+    using Telegram.Bot;
     using Telegram.Bot.Types;
     using Telegram.Bot.Types.Enums;
+    using Telegram.Bot.Types.ReplyMarkups;
+
+    using BotProcessing.Interfaces.Services;
 
     /// <summary>
     /// BotController
@@ -16,26 +22,36 @@ namespace AirwaySchedule.Bot.WebAPI.Controllers
     public class BotController : Controller
     {
         private readonly ICommandInvokerService _commandInvokerService;
+        private readonly ITelegramBotClient _botClient;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BotController"/> class.
         /// </summary>
         /// <param name="commandInvokerService">commandInvokerService</param>
-        public BotController(ICommandInvokerService commandInvokerService)
+        /// <param name="botClient">botClient</param>
+        public BotController(ICommandInvokerService commandInvokerService, ITelegramBotClient botClient)
         {
             _commandInvokerService = commandInvokerService;
+            _botClient = botClient;
         }
 
         /// <summary>
         /// Update
         /// </summary>
         /// <param name="update">update</param>
-        [HttpPost]
-        public void Update([FromBody]Update update)
+        /// <returns>Task</returns>
+        [HttpPost("update")]
+        public async Task Update([FromBody]Update update)
         {
             if (update != null && update.Message.Type == MessageType.Text)
             {
-                _commandInvokerService.ExecuteCommand(update.Message.Chat.Id, update.Message.Text);
+                try
+                {
+                    await _commandInvokerService.ExecuteCommandAsync(update.Message.Chat.Id, update.Message.Text);
+                }
+                catch
+                {
+                }
             }
         }
     }

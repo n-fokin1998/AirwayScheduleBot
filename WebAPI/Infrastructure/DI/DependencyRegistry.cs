@@ -4,11 +4,16 @@
 
 namespace AirwaySchedule.Bot.WebAPI.Infrastructure.DI
 {
+    using Microsoft.Extensions.Configuration;
+
+    using AutoMapper;
+    using Autofac;
+
     using AirwaySchedule.Bot.AdminPanelProcessing.Infrastructure;
     using AirwaySchedule.Bot.AdminPanelProcessing.Interfaces;
     using AirwaySchedule.Bot.AdminPanelProcessing.Services;
-    using AirwaySchedule.Bot.BotProcessing.Interfaces;
-    using AirwaySchedule.Bot.BotProcessing.Interfaces.Commands;
+    using BotProcessing.Interfaces.Services;
+    using BotProcessing.Interfaces.Services.Commands;
     using AirwaySchedule.Bot.BotProcessing.Services;
     using AirwaySchedule.Bot.BotProcessing.Services.Commands;
     using AirwaySchedule.Bot.DataAccess;
@@ -16,10 +21,15 @@ namespace AirwaySchedule.Bot.WebAPI.Infrastructure.DI
     using AirwaySchedule.Bot.DataAccess.Interfaces;
     using AirwaySchedule.Bot.DataAccess.Interfaces.Filter;
     using AirwaySchedule.Bot.DataAccess.Repositories;
-    using AirwaySchedule.Bot.IntegrationProxy.Interfaces;
+    using AirwaySchedule.Bot.IntegrationProxy.Infrastructure;
     using AirwaySchedule.Bot.IntegrationProxy.Services;
-    using AutoMapper;
-    using Microsoft.Extensions.DependencyInjection;
+    using AirwaySchedule.Bot.IntegrationProxy.Interfaces.Infrastructure;
+    using AirwaySchedule.Bot.IntegrationProxy.Interfaces.Services;
+    using AirwaySchedule.Bot.IntegrationProxy.Models;
+    using AirwaySchedule.Bot.BotProcessing.Infrastructure.ScheduleRequestCreator;
+    using AirwaySchedule.Bot.BotProcessing.Infrastructure.ScheduleRequestCreator.Strategies;
+    using BotProcessing.Interfaces.Infrastructure.ScheduleRequestCreator;
+    using AirwaySchedule.Bot.Common.Utils;
 
     /// <summary>
     /// DependencyRegistry
@@ -27,11 +37,11 @@ namespace AirwaySchedule.Bot.WebAPI.Infrastructure.DI
     public static class DependencyRegistry
     {
         /// <summary>
-        /// AddServices
+        /// Add builder.
         /// </summary>
-        /// <param name="services">services</param>
+        /// <param name="builder">builder</param>
         /// <param name="connectionString">connectionString</param>
-        public static void AddServices(this IServiceCollection services, string connectionString)
+        public static void AddServices(this ContainerBuilder builder, string connectionString)
         {
             var config = new MapperConfiguration(cfg =>
             {
@@ -39,16 +49,40 @@ namespace AirwaySchedule.Bot.WebAPI.Infrastructure.DI
             });
 
             var mapper = config.CreateMapper();
-            services.AddSingleton(mapper);
+            builder.Register(x => mapper).SingleInstance();
 
-            services.AddScoped<IYandexApiProxy, YandexApiProxy>();
-            services.AddScoped<ICommandInvokerService, CommandInvokerService>();
-            services.AddScoped<IScheduleCommandService, ScheduleCommandService>();
-            services.AddScoped<IPlaneService, PlaneService>();
-            services.AddScoped<IUnitOfWork, UnitOfWork>();
-            services.AddScoped<IPlaneRepository, PlaneRepository>();
-            services.AddScoped<IFilterPipelineBuilder, FilterPipelineBuilder>();
-            services.AddScoped(x => new AirwayScheduleContext(connectionString));
+            builder.RegisterType<PlaneService>().As<IPlaneService>();
+
+            builder.RegisterType<CommandInvokerService>().As<ICommandInvokerService>();
+            builder.RegisterType<ScheduleCommandService>().As<IScheduleCommandService>();
+            builder.RegisterType<PlaneDetailsCommandService>().As<IPlaneDetailsCommandService>();
+            builder.RegisterType<ScheduleRequestCreator>().As<IScheduleRequestCreator>();
+            builder.RegisterType<RequestByIataStrategy>().Keyed<IScheduleRequestStrategy>(CommandNames.ScheduleByIataCommand);
+            builder.RegisterType<RequestByCityStrategy>().Keyed<IScheduleRequestStrategy>(CommandNames.ScheduleByCityCommand);
+            builder.RegisterType<RequestByAirportStrategy>().Keyed<IScheduleRequestStrategy>(CommandNames.ScheduleByAirportCommand);
+
+            builder.RegisterType<YandexApiProxy>().As<IYandexApiProxy>();
+            builder.RegisterType<IataApiProxy>().As<IIataApiProxy>();
+            builder.RegisterType<RestSharpHelper>().As<IRestSharpHelper>();
+            builder.RegisterType<FilterPipelineBuilder>().As<IFilterPipelineBuilder>();
+
+            builder.RegisterType<UnitOfWork>().As<IUnitOfWork>();
+            builder.RegisterType<PlaneRepository>().As<IPlaneRepository>();
+            builder.Register(x => new AirwayScheduleContext(connectionString)).InstancePerLifetimeScope();
+        }
+
+        /// <summary>
+        /// Add configuration models.
+        /// </summary>
+        /// <param name="builder">builder</param>
+        /// <param name="configuration">configuration</param>
+        public static void AddConfiguration(this ContainerBuilder builder, IConfiguration configuration)
+        {
+            var yandexApiConfig = configuration.GetSection(nameof(YandexApiConfiguration)).Get<YandexApiConfiguration>();
+            var iataApiConfig = configuration.GetSection(nameof(IataApiConfiguration)).Get<IataApiConfiguration>();
+
+            builder.Register(x => yandexApiConfig).SingleInstance();
+            builder.Register(x => iataApiConfig).SingleInstance();
         }
     }
 }

@@ -5,7 +5,7 @@
 namespace AirwaySchedule.Bot.DataAccess.Interfaces
 {
     using System.Collections.Generic;
-    using AirwaySchedule.Bot.Data.FilterModels;
+    using AirwaySchedule.Bot.Common.FilterModels;
     using AirwaySchedule.Bot.DataAccess.Entities;
 
     /// <summary>

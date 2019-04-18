@@ -4,7 +4,7 @@
 
 namespace AirwaySchedule.Bot.AdminPanelProcessing.Infrastructure
 {
-    using AirwaySchedule.Bot.Data.Dto;
+    using Common.Models;
     using AirwaySchedule.Bot.DataAccess.Entities;
     using AutoMapper;
 
@@ -18,7 +18,7 @@ namespace AirwaySchedule.Bot.AdminPanelProcessing.Infrastructure
         /// </summary>
         public AdminPanelMappingProfile()
         {
-            CreateMap<Plane, PlaneDto>().ReverseMap();
+            CreateMap<DataAccess.Entities.Plane, Common.Models.Plane>().ReverseMap();
         }
     }
 }

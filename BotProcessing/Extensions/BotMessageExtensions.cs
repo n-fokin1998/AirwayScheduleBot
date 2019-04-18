@@ -36,7 +36,7 @@ namespace AirwaySchedule.Bot.BotProcessing.Extensions
         /// <returns>string array</returns>
         public static string[] GetCommandParameters(this string message)
         {
-            return message.Replace(" ", string.Empty).Split(',');
+            return message.Trim().Split(' ');
         }
     }
 }

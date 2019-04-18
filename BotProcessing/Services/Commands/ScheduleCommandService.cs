@@ -7,34 +7,41 @@ namespace AirwaySchedule.Bot.BotProcessing.Services.Commands
     using System;
     using System.Text;
     using System.Threading.Tasks;
-    using AirwaySchedule.Bot.BotProcessing.Extensions;
-    using AirwaySchedule.Bot.BotProcessing.Interfaces.Commands;
-    using AirwaySchedule.Bot.Data.Dto;
-    using Infrastructure;
-    using AirwaySchedule.Bot.IntegrationProxy.Interfaces;
-    using AirwaySchedule.Bot.IntegrationProxy.Models.Response;
+
     using Telegram.Bot;
+
+    using Common.Exceptions;
+
+    using Interfaces.Services.Commands;
+    using AirwaySchedule.Bot.BotProcessing.Models;
+    using AirwaySchedule.Bot.IntegrationProxy.Interfaces.Services;
+    using IntegrationProxy.Contracts.YandexApi;
+    using Interfaces.Infrastructure.ScheduleRequestCreator;
 
     /// <summary>
     /// ScheduleCommandService
     /// </summary>
     public class ScheduleCommandService : IScheduleCommandService
     {
-        private const string DateFormatErrorMessage = "Неверный формат даты";
-        private const string CommandFormatErrorMessage = "Команда введена неверно";
-        private const string ApiErrorMessage = "Произошла ошибка сервера";
+        private const string ApiErrorMessage = "Something went wrong";
 
         private readonly IYandexApiProxy _yandexApiProxy;
+        private readonly IScheduleRequestCreator _requestCreator;
         private readonly ITelegramBotClient _telegramBotClient;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ScheduleCommandService"/> class.
         /// </summary>
         /// <param name="yandexApiProxy">yandexApiProxy</param>
+        /// <param name="requestCreator">requestCreator</param>
         /// <param name="telegramBotClient">telegramBotClient</param>
-        public ScheduleCommandService(IYandexApiProxy yandexApiProxy, ITelegramBotClient telegramBotClient)
+        public ScheduleCommandService(
+            IYandexApiProxy yandexApiProxy,
+            IScheduleRequestCreator requestCreator,
+            ITelegramBotClient telegramBotClient)
         {
             _yandexApiProxy = yandexApiProxy;
+            _requestCreator = requestCreator;
             _telegramBotClient = telegramBotClient;
         }
 
@@ -42,44 +49,28 @@ namespace AirwaySchedule.Bot.BotProcessing.Services.Commands
         /// ExecuteAsync
         /// </summary>
         /// <param name="chatId">chatId</param>
-        /// <param name="commandText">commandText</param>
+        /// <param name="command">command</param>
         /// <returns>Task</returns>
-        public async Task ExecuteAsync(long chatId, string commandText)
+        public async Task ExecuteAsync(long chatId, Command command)
         {
-            var requestParameters = commandText.GetCommandParameters();
+            var requestModel = await _requestCreator.CreateRequest(chatId, command);
 
-            if (requestParameters.Length < 3)
-            {
-                throw new BotCommandException(chatId, CommandFormatErrorMessage);
-            }
-
-            var requestParametersDto = new RequestParametersDto
-            {
-                Departure = requestParameters[0],
-                Destination = requestParameters[1]
-            };
-
-            if (!DateTime.TryParse(requestParameters[2], out var result))
-            {
-                throw new BotCommandException(chatId, DateFormatErrorMessage);
-            }
-
-            requestParametersDto.DateFrom = result;
-
-            ApiResponse responseModel;
+            YandexApiResponse responseModel;
             try
             {
-                responseModel = await _yandexApiProxy.GetResponseAsync(requestParametersDto);
+                responseModel = await _yandexApiProxy.GetResponseAsync(requestModel);
             }
             catch (Exception)
             {
                 throw new BotCommandException(chatId, ApiErrorMessage);
             }
 
-            await _telegramBotClient.SendTextMessageAsync(chatId, BuildResponseBody(responseModel));
+            var responseMessage = BuildResponseMessage(responseModel);
+
+            await _telegramBotClient.SendTextMessageAsync(chatId, responseMessage, disableWebPagePreview: true);
         }
 
-        private string BuildResponseBody(ApiResponse responseModel)
+        private string BuildResponseMessage(YandexApiResponse responseModel)
         {
             var response = new StringBuilder();
             var segments = responseModel.Segments;
@@ -87,20 +78,18 @@ namespace AirwaySchedule.Bot.BotProcessing.Services.Commands
             foreach (var segment in segments)
             {
                 response.Append(
-                    $"Рейс: {segment.Thread.Title}\n" +
-                    $"Номер рейса: {segment.Thread.Number}\n" +
-                    $"Вылет из: {segment.DeparturePoint.Title}\n" +
-                    $"Прибытие в: {segment.ArrivalPoint.Title}\n" +
-                    $"Дата вылета: {segment.Departure.ToShortDateString() + " " + segment.Departure.ToShortTimeString()}\n" +
-                    $"Дата прибытия: {segment.Arrival.ToShortDateString() + " " + segment.Arrival.ToShortTimeString()}\n" +
-                    $"Авиакомпания: {segment.Thread.Carrier.Title}\n" +
-                    $"Сайт: {segment.Thread.Carrier.Url}\n" +
-                    $"Самолёт: {segment.Thread.Vehicle}");
+                    $"Flight: {segment.Thread.Title}\n" +
+                    $"Flight number: {segment.Thread.Number}\n" +
+                    $"Departure: {segment.DeparturePoint.Title}\n" +
+                    $"Arrival: {segment.ArrivalPoint.Title}\n" +
+                    $"Departure date: {segment.Departure.ToShortDateString() + " " + segment.Departure.ToShortTimeString()}\n" +
+                    $"Arrival date: {segment.Arrival.ToShortDateString() + " " + segment.Arrival.ToShortTimeString()}\n" +
+                    $"Airline: {segment.Thread.Carrier.Title}\n" +
+                    $"Site: {segment.Thread.Carrier.Url}\n" +
+                    $"Plane: {segment.Thread.Vehicle}");
 
-                if (segments.FindIndex(x => x == segment) == segments.Count - 1)
-                {
-                    response.Append("\n\n");
-                }
+                response.AppendLine();
+                response.AppendLine();
             }
 
             return response.ToString();

@@ -5,11 +5,14 @@
 namespace AirwaySchedule.Bot.BotProcessing.Services.Commands
 {
     using System.Threading.Tasks;
-    using AirwaySchedule.Bot.BotProcessing.Infrastructure;
-    using AirwaySchedule.Bot.BotProcessing.Interfaces.Commands;
-    using AirwaySchedule.Bot.DataAccess.Entities;
-    using AirwaySchedule.Bot.DataAccess.Interfaces;
+
     using Telegram.Bot;
+
+    using Common.Exceptions;
+    using Interfaces.Services.Commands;
+    using AirwaySchedule.Bot.DataAccess.Entities;
+    using AirwaySchedule.Bot.BotProcessing.Models;
+    using AirwaySchedule.Bot.DataAccess.Interfaces;
 
     /// <summary>
     /// PlaneDetailsCommandService
@@ -36,11 +39,11 @@ namespace AirwaySchedule.Bot.BotProcessing.Services.Commands
         /// ExecuteAsync
         /// </summary>
         /// <param name="chatId">chatId</param>
-        /// <param name="commandText">commandText</param>
+        /// <param name="command">command</param>
         /// <returns>Task</returns>
-        public async Task ExecuteAsync(long chatId, string commandText)
+        public async Task ExecuteAsync(long chatId, Command command)
         {
-            var responseModel = _unitOfWork.Planes.FindByName(commandText);
+            var responseModel = _unitOfWork.Planes.FindByName(command.Text);
 
             if (responseModel == null)
             {

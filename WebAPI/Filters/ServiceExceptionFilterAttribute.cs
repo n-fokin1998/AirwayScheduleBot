@@ -5,7 +5,7 @@
 namespace AirwaySchedule.Bot.WebAPI.Filters
 {
     using System.Threading.Tasks;
-    using BotProcessing.Infrastructure;
+    using Common.Exceptions;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Filters;
     using Telegram.Bot;
@@ -13,14 +13,14 @@ namespace AirwaySchedule.Bot.WebAPI.Filters
     /// <summary>
     /// ServiceExceptionFilterAttribute
     /// </summary>
-    public class ServiceExceptionFilterAttribute : ExceptionFilterAttribute
+    public class ServiceExceptionFilterAttribute : IAsyncExceptionFilter
     {
         /// <summary>
         /// OnException
         /// </summary>
         /// <param name="context">context</param>
         /// <returns>Task</returns>
-        public override async Task OnExceptionAsync(ExceptionContext context)
+        public async Task OnExceptionAsync(ExceptionContext context)
         {
             if (context.Exception is BotCommandException serviceException)
             {
@@ -31,8 +31,6 @@ namespace AirwaySchedule.Bot.WebAPI.Filters
 
                 context.Result = new OkResult();
             }
-
-            await base.OnExceptionAsync(context);
         }
     }
 }

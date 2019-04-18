@@ -4,15 +4,19 @@
 
 namespace AirwaySchedule.Bot.IntegrationProxy.Services
 {
-    using System;
+    using System.Collections.Generic;
     using System.Net;
     using System.Threading.Tasks;
-    using Bot.Data.Dto;
-    using Bot.IntegrationProxy.Interfaces;
-    using Microsoft.Extensions.Logging;
-    using Models.Response;
+
     using Newtonsoft.Json;
-    using RestSharp;
+
+    using Contracts.YandexApi;
+
+    using Common.Models;
+    using AirwaySchedule.Bot.Common.Extensions;
+    using AirwaySchedule.Bot.IntegrationProxy.Interfaces.Infrastructure;
+    using AirwaySchedule.Bot.IntegrationProxy.Interfaces.Services;
+    using AirwaySchedule.Bot.IntegrationProxy.Models;
 
     /// <summary>
     /// YandexApiProxy
@@ -20,63 +24,56 @@ namespace AirwaySchedule.Bot.IntegrationProxy.Services
     public class YandexApiProxy : IYandexApiProxy
     {
         private readonly YandexApiConfiguration _configuration;
-        private readonly ILogger<YandexApiConfiguration> _logger;
+        private readonly IRestSharpHelper _restSharpHelper;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="YandexApiProxy"/> class.
         /// </summary>
         /// <param name="configuration">configuration</param>
-        /// <param name="logger">logger</param>
-        public YandexApiProxy(YandexApiConfiguration configuration, ILogger<YandexApiConfiguration> logger)
+        /// <param name="restSharpHelper">restSharpHelper</param>
+        public YandexApiProxy(YandexApiConfiguration configuration, IRestSharpHelper restSharpHelper)
         {
             _configuration = configuration;
-            _logger = logger;
+            _restSharpHelper = restSharpHelper;
         }
 
         /// <summary>
         /// GetResponseAsync
         /// </summary>
         /// <param name="requestParameters">requestParameters</param>
-        /// <returns>ApiResponse</returns>
-        public async Task<ApiResponse> GetResponseAsync(RequestParametersDto requestParameters)
+        /// <returns>YandexApiResponse</returns>
+        public async Task<YandexApiResponse> GetResponseAsync(RequestParameters requestParameters)
         {
-            var client = BuildClient();
-            var request = BuildRequest(requestParameters);
+            var client = _restSharpHelper.CreateClient(_configuration.BaseUrl);
+            var request = _restSharpHelper.CreateRequest(_configuration.Resource, BuildQueryParameters(requestParameters));
 
             var response = await client.ExecuteGetTaskAsync(request);
 
             if (response.StatusCode != HttpStatusCode.OK)
             {
-                var ex = response.ErrorException;
-                _logger.LogError(ex, "Error during request to yandex api");
-                throw ex;
+                var exception = response.ErrorException;
+
+                throw exception;
             }
 
-            return JsonConvert.DeserializeObject<ApiResponse>(response.Content);
+            return JsonConvert.DeserializeObject<YandexApiResponse>(response.Content);
         }
 
-        private IRestClient BuildClient()
+        private IDictionary<string, string> BuildQueryParameters(RequestParameters requestParameters)
         {
-            var uriBuilder = new UriBuilder(_configuration.BaseUrl);
-            var client = new RestClient(uriBuilder.Uri);
+            var parameters = new Dictionary<string, string>
+            {
+                { "apikey", _configuration.ApiKey },
+                { "format", _configuration.Format },
+                { "from", requestParameters.Departure },
+                { "to", requestParameters.Destination },
+                { "lang", _configuration.Language },
+                { "transport_types", _configuration.TransportType },
+                { "system", _configuration.System },
+                { "date", requestParameters.DateFrom.ToIsoString() }
+            };
 
-            return client;
-        }
-
-        private IRestRequest BuildRequest(RequestParametersDto requestParameters)
-        {
-            var request = new RestRequest(_configuration.Resource);
-
-            request.AddHeader("Authorization", _configuration.ApiKey);
-            request.AddQueryParameter("format", _configuration.Format);
-            request.AddQueryParameter("from", requestParameters.Departure);
-            request.AddQueryParameter("to", requestParameters.Destination);
-            request.AddQueryParameter("lang", "ru_RU");
-            request.AddQueryParameter("transport_types", _configuration.TransportType);
-            request.AddQueryParameter("system", _configuration.System);
-            request.AddQueryParameter("date", requestParameters.DateFrom.ToShortDateString());
-
-            return request;
+            return parameters;
         }
     }
 }

@@ -4,9 +4,8 @@
 
 namespace AirwaySchedule.Bot.WebAPI
 {
-    using AirwaySchedule.Bot.WebAPI.Filters;
-    using AirwaySchedule.Bot.WebAPI.Infrastructure.DI;
-    using IntegrationProxy.Models.Response;
+    using System;
+
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Mvc;
@@ -14,8 +13,14 @@ namespace AirwaySchedule.Bot.WebAPI
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
+
+    using Autofac;
     using Swashbuckle.AspNetCore.Swagger;
     using Telegram.Bot;
+
+    using Autofac.Extensions.DependencyInjection;
+    using AirwaySchedule.Bot.WebAPI.Filters;
+    using AirwaySchedule.Bot.WebAPI.Infrastructure.DI;
 
     /// <summary>
     /// Startup
@@ -27,37 +32,46 @@ namespace AirwaySchedule.Bot.WebAPI
         /// <summary>
         /// Initializes a new instance of the <see cref="Startup"/> class.
         /// </summary>
-        /// <param name="configuration">configuration</param>
         /// <param name="logger">logger</param>
-        public Startup(IConfiguration configuration, ILogger<Startup> logger)
+        /// <param name="environment">environment</param>
+        public Startup(ILogger<Startup> logger, IHostingEnvironment environment)
         {
             _logger = logger;
-            Configuration = configuration;
+
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(environment.ContentRootPath)
+                .AddJsonFile("appsettings.json", true, true)
+                .AddJsonFile($"appsettings.{environment.EnvironmentName}.json", true)
+                .AddEnvironmentVariables();
+            Configuration = builder.Build();
         }
+
+        /// <summary>
+        /// Container
+        /// </summary>
+        public IContainer Container { get; private set; }
 
         /// <summary>
         /// Configuration
         /// </summary>
-        public IConfiguration Configuration { get; }
+        public IConfiguration Configuration { get; set; }
 
         /// <summary>
         /// ConfigureServices
         /// </summary>
         /// <param name="services">services</param>
-        public void ConfigureServices(IServiceCollection services)
+        /// <returns>IServiceProvider</returns>
+        public IServiceProvider ConfigureServices(IServiceCollection services)
         {
-            var config = Configuration.GetSection(nameof(YandexApiConfiguration)).Get<YandexApiConfiguration>();
-            services.AddSingleton(config);
+            var builder = new ContainerBuilder();
 
-            var botClient = new TelegramBotClient(Configuration["TelegramBotConfiguration:Token"]);
-
-            // botClient.SetWebhookAsync("url").Wait();
-            _logger.LogInformation("Created bot client with Id: " + botClient.BotId);
+            var botClient = SetupBotClient();
 
             var connectionString = Configuration.GetConnectionString("AirwayScheduleDatabase");
 
-            services.AddSingleton<ITelegramBotClient>(botClient);
-            services.AddServices(connectionString);
+            builder.Register(x => botClient).As<ITelegramBotClient>().SingleInstance();
+            builder.AddConfiguration(Configuration);
+            builder.AddServices(connectionString);
 
             services.AddMvc(options =>
             {
@@ -73,6 +87,11 @@ namespace AirwaySchedule.Bot.WebAPI
             {
                 configuration.RootPath = "ClientApp/dist";
             });
+
+            builder.Populate(services);
+            Container = builder.Build();
+
+            return new AutofacServiceProvider(Container);
         }
 
         /// <summary>
@@ -116,6 +135,17 @@ namespace AirwaySchedule.Bot.WebAPI
                     spa.UseAngularCliServer(npmScript: "start");
                 }
             });
+        }
+
+        private TelegramBotClient SetupBotClient()
+        {
+            var botClient = new TelegramBotClient(Configuration["TelegramBotConfiguration:Token"]);
+
+            // ngrok http localhost:50208 -host-header=localhost
+            botClient.SetWebhookAsync("https://27ca5439.ngrok.io/api/bot/update").Wait();
+            _logger.LogInformation("Created bot client with Id: " + botClient.BotId);
+
+            return botClient;
         }
     }
 }
