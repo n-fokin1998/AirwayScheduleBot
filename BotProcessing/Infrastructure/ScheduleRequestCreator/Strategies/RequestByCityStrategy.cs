@@ -42,8 +42,8 @@ namespace AirwaySchedule.Bot.BotProcessing.Infrastructure.ScheduleRequestCreator
 
                 return new RequestParameters
                 {
-                    Departure = departureIataResponse.Cities.First().Code,
-                    Destination = destinationIataResponse.Cities.First().Code
+                    Departure = departureIataResponse.Response.Cities.First().Code,
+                    Destination = destinationIataResponse.Response.Cities.First().Code
                 };
             });
         }

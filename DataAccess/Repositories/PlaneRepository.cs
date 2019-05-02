@@ -7,12 +7,15 @@ namespace AirwaySchedule.Bot.DataAccess.Repositories
     using System;
     using System.Collections.Generic;
     using System.Linq;
+
+    using MongoDB.Bson;
+    using MongoDB.Driver;
+
     using AirwaySchedule.Bot.Common.FilterModels;
+    using AirwaySchedule.Bot.DataAccess.Mongo;
     using AirwaySchedule.Bot.DataAccess.Entities;
     using AirwaySchedule.Bot.DataAccess.Interfaces;
     using AirwaySchedule.Bot.DataAccess.Interfaces.Filter;
-    using MongoDB.Bson;
-    using MongoDB.Driver;
 
     /// <summary>
     /// PlaneRepository

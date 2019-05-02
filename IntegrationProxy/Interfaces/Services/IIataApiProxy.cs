@@ -18,6 +18,6 @@ namespace AirwaySchedule.Bot.IntegrationProxy.Interfaces.Services
         /// </summary>
         /// <param name="searchKey">searchKey</param>
         /// <returns>IataApiResponse</returns>
-        Task<IataApiResponse> GetResponseAsync(string searchKey);
+        Task<Temp> GetResponseAsync(string searchKey);
     }
 }

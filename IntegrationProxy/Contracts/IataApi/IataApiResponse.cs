@@ -11,7 +11,6 @@ namespace AirwaySchedule.Bot.IntegrationProxy.Contracts.IataApi
     /// <summary>
     /// IataApiResponse
     /// </summary>
-    [JsonObject("response")]
     public class IataApiResponse
     {
         /// <summary>

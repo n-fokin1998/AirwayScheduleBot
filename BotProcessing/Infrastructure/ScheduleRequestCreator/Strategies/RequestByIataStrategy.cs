@@ -24,7 +24,7 @@ namespace AirwaySchedule.Bot.BotProcessing.Infrastructure.ScheduleRequestCreator
         {
             return await CreateRequest(chatId, commandText, async (departure, destination) =>
             {
-                return await new Task<RequestParameters>(() => new RequestParameters
+                return await Task.FromResult(new RequestParameters
                 {
                     Departure = departure,
                     Destination = destination

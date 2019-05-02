@@ -19,19 +19,19 @@ namespace AirwaySchedule.Bot.BotProcessing.Services.Commands
     /// </summary>
     public class PlaneDetailsCommandService : IPlaneDetailsCommandService
     {
-        private const string PlaneNotFoundErrorMessage = "Самолёт не найден";
+        private const string PlaneNotFoundErrorMessage = "Plane not found";
 
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly IPlaneRepository _planeRepository;
         private readonly ITelegramBotClient _telegramBotClient;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PlaneDetailsCommandService"/> class.
         /// </summary>
-        /// <param name="unitOfWork">unitOfWork</param>
+        /// <param name="planeRepository">planeRepository</param>
         /// <param name="telegramBotClient">telegramBotClient</param>
-        public PlaneDetailsCommandService(IUnitOfWork unitOfWork, ITelegramBotClient telegramBotClient)
+        public PlaneDetailsCommandService(IPlaneRepository planeRepository, ITelegramBotClient telegramBotClient)
         {
-            _unitOfWork = unitOfWork;
+            _planeRepository = planeRepository;
             _telegramBotClient = telegramBotClient;
         }
 
@@ -43,22 +43,24 @@ namespace AirwaySchedule.Bot.BotProcessing.Services.Commands
         /// <returns>Task</returns>
         public async Task ExecuteAsync(long chatId, Command command)
         {
-            var responseModel = _unitOfWork.Planes.FindByName(command.Text);
+            var responseModel = _planeRepository.FindByName(command.Text);
 
             if (responseModel == null)
             {
                 throw new BotCommandException(chatId, PlaneNotFoundErrorMessage);
             }
 
-            await _telegramBotClient.SendTextMessageAsync(chatId, BuildResponseBody(responseModel));
+            var responseMessage = BuildResponseMessage(responseModel);
+
+            await _telegramBotClient.SendTextMessageAsync(chatId, responseMessage);
         }
 
-        private string BuildResponseBody(Plane responseModel)
+        private string BuildResponseMessage(Plane responseModel)
         {
-            var response = $"Модель: {responseModel.Name}\n" +
-                           $"Количество мест: {responseModel.Seats}\n" +
-                           $"Крейсерская скорость: {responseModel.Seats}\n" +
-                           $"Дальность полёта: {responseModel.Range}";
+            var response = $"Model: {responseModel.Name}\n" +
+                           $"Number of seats: {responseModel.Seats}\n" +
+                           $"Speed: {responseModel.Speed}\n" +
+                           $"Range of flight: {responseModel.Range}";
 
             return response;
         }

@@ -9,6 +9,7 @@ namespace AirwaySchedule.Bot.WebAPI.Infrastructure.DI
     using AutoMapper;
     using Autofac;
 
+    using AirwaySchedule.Bot.DataAccess.Mongo;
     using AirwaySchedule.Bot.AdminPanelProcessing.Infrastructure;
     using AirwaySchedule.Bot.AdminPanelProcessing.Interfaces;
     using AirwaySchedule.Bot.AdminPanelProcessing.Services;
@@ -66,7 +67,6 @@ namespace AirwaySchedule.Bot.WebAPI.Infrastructure.DI
             builder.RegisterType<RestSharpHelper>().As<IRestSharpHelper>();
             builder.RegisterType<FilterPipelineBuilder>().As<IFilterPipelineBuilder>();
 
-            builder.RegisterType<UnitOfWork>().As<IUnitOfWork>();
             builder.RegisterType<PlaneRepository>().As<IPlaneRepository>();
             builder.Register(x => new AirwayScheduleContext(connectionString)).InstancePerLifetimeScope();
         }

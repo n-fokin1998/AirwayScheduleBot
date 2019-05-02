@@ -39,7 +39,7 @@ namespace AirwaySchedule.Bot.IntegrationProxy.Services
         /// </summary>
         /// <param name="searchKey">searchKey</param>
         /// <returns>IataApiResponse</returns>
-        public async Task<IataApiResponse> GetResponseAsync(string searchKey)
+        public async Task<Temp> GetResponseAsync(string searchKey)
         {
             var client = _restSharpHelper.CreateClient(_configuration.BaseUrl);
             var request = _restSharpHelper.CreateRequest(_configuration.Resource, BuildQueryParameters(searchKey));
@@ -53,7 +53,7 @@ namespace AirwaySchedule.Bot.IntegrationProxy.Services
                 throw exception;
             }
 
-            return JsonConvert.DeserializeObject<IataApiResponse>(response.Content);
+            return JsonConvert.DeserializeObject<Temp>(response.Content);
         }
 
         private IDictionary<string, string> BuildQueryParameters(string searchKey)

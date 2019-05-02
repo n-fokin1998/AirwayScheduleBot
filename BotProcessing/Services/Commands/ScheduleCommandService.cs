@@ -5,15 +5,17 @@
 namespace AirwaySchedule.Bot.BotProcessing.Services.Commands
 {
     using System;
-    using System.Text;
     using System.Threading.Tasks;
 
     using Telegram.Bot;
+    using Telegram.Bot.Types.ReplyMarkups;
 
     using Common.Exceptions;
 
     using Interfaces.Services.Commands;
     using AirwaySchedule.Bot.BotProcessing.Models;
+    using AirwaySchedule.Bot.Common.Utils;
+
     using AirwaySchedule.Bot.IntegrationProxy.Interfaces.Services;
     using IntegrationProxy.Contracts.YandexApi;
     using Interfaces.Infrastructure.ScheduleRequestCreator;
@@ -65,19 +67,14 @@ namespace AirwaySchedule.Bot.BotProcessing.Services.Commands
                 throw new BotCommandException(chatId, ApiErrorMessage);
             }
 
-            var responseMessage = BuildResponseMessage(responseModel);
-
-            await _telegramBotClient.SendTextMessageAsync(chatId, responseMessage, disableWebPagePreview: true);
+            await SendResponse(chatId, responseModel);
         }
 
-        private string BuildResponseMessage(YandexApiResponse responseModel)
+        private async Task SendResponse(long chatId, YandexApiResponse responseModel)
         {
-            var response = new StringBuilder();
-            var segments = responseModel.Segments;
-
-            foreach (var segment in segments)
+            foreach (var segment in responseModel.Segments)
             {
-                response.Append(
+                var res =
                     $"Flight: {segment.Thread.Title}\n" +
                     $"Flight number: {segment.Thread.Number}\n" +
                     $"Departure: {segment.DeparturePoint.Title}\n" +
@@ -86,13 +83,18 @@ namespace AirwaySchedule.Bot.BotProcessing.Services.Commands
                     $"Arrival date: {segment.Arrival.ToShortDateString() + " " + segment.Arrival.ToShortTimeString()}\n" +
                     $"Airline: {segment.Thread.Carrier.Title}\n" +
                     $"Site: {segment.Thread.Carrier.Url}\n" +
-                    $"Plane: {segment.Thread.Vehicle}");
+                    $"Plane: {segment.Thread.Vehicle}";
 
-                response.AppendLine();
-                response.AppendLine();
+                await _telegramBotClient.SendTextMessageAsync(
+                    chatId,
+                    res,
+                    disableWebPagePreview: true,
+                    replyMarkup: new InlineKeyboardMarkup(new InlineKeyboardButton
+                    {
+                        Text = "Plane info",
+                        CallbackData = $"{CommandNames.PlaneDetailsCommand} {segment.Thread.Vehicle}"
+                    }));
             }
-
-            return response.ToString();
         }
     }
 }

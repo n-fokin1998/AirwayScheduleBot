@@ -11,7 +11,6 @@ namespace AirwaySchedule.Bot.WebAPI.Controllers
     using Telegram.Bot;
     using Telegram.Bot.Types;
     using Telegram.Bot.Types.Enums;
-    using Telegram.Bot.Types.ReplyMarkups;
 
     using BotProcessing.Interfaces.Services;
 
@@ -43,11 +42,14 @@ namespace AirwaySchedule.Bot.WebAPI.Controllers
         [HttpPost("update")]
         public async Task Update([FromBody]Update update)
         {
-            if (update != null && update.Message.Type == MessageType.Text)
+            if (update != null && (update.CallbackQuery != null || update.Message.Type == MessageType.Text))
             {
+                var chatId = update.CallbackQuery?.Message.Chat.Id ?? update.Message.Chat.Id;
+                var messageText = update.CallbackQuery?.Data ?? update.Message.Text;
+
                 try
                 {
-                    await _commandInvokerService.ExecuteCommandAsync(update.Message.Chat.Id, update.Message.Text);
+                    await _commandInvokerService.ExecuteCommandAsync(chatId, messageText);
                 }
                 catch
                 {

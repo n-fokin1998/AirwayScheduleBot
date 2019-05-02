@@ -18,7 +18,6 @@
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj" />
     <ProjectReference Include="..\DataAccess\DataAccess.csproj" />
-    <ProjectReference Include="..\Data\Common.csproj" />
     <ProjectReference Include="..\IntegrationProxy\IntegrationProxy.csproj" />
   </ItemGroup>
 

@@ -16,17 +16,17 @@ namespace AirwaySchedule.Bot.AdminPanelProcessing.Services
     /// </summary>
     public class PlaneService : IPlaneService
     {
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly IPlaneRepository _planeRepository;
         private readonly IMapper _mapper;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PlaneService"/> class.
         /// </summary>
-        /// <param name="unitOfWork">unitOfWork</param>
+        /// <param name="planeRepository">planeRepository</param>
         /// <param name="mapper">mapper</param>
-        public PlaneService(IUnitOfWork unitOfWork, IMapper mapper)
+        public PlaneService(IPlaneRepository planeRepository, IMapper mapper)
         {
-            _unitOfWork = unitOfWork;
+            _planeRepository = planeRepository;
             _mapper = mapper;
         }
 
@@ -38,7 +38,7 @@ namespace AirwaySchedule.Bot.AdminPanelProcessing.Services
         /// <returns>IEnumerable</returns>
         public IEnumerable<Plane> GetFilteredPlanes(string searchKey, PagingInfo pagingInfo)
         {
-            var filteredPlanes = _unitOfWork.Planes.GetFilteredList(searchKey, pagingInfo);
+            var filteredPlanes = _planeRepository.GetFilteredList(searchKey, pagingInfo);
 
             return _mapper.Map<IEnumerable<Plane>>(filteredPlanes);
         }

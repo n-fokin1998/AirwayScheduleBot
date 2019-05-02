@@ -2,11 +2,13 @@
 // Copyright (c) Kharkiv National Aerospace University. All rights reserved.
 // </copyright>
 
-namespace AirwaySchedule.Bot.DataAccess
+namespace AirwaySchedule.Bot.DataAccess.Mongo
 {
     using System;
-    using AirwaySchedule.Bot.DataAccess.Entities;
+
     using MongoDB.Driver;
+
+    using AirwaySchedule.Bot.DataAccess.Entities;
 
     /// <summary>
     /// AirwayScheduleContext
@@ -27,7 +29,8 @@ namespace AirwaySchedule.Bot.DataAccess
             var client = new MongoClient(connectionString);
             var database = client.GetDatabase(connection.DatabaseName);
 
-            _planesCollection = new Lazy<IMongoCollection<Plane>>(() => database.GetCollection<Plane>(PlanesCollectionName));
+            _planesCollection = new Lazy<IMongoCollection<Plane>>(
+                () => database.GetCollection<Plane>(PlanesCollectionName));
         }
 
         /// <summary>
