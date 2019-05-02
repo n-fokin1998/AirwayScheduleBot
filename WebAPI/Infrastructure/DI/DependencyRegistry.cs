@@ -6,21 +6,14 @@ namespace AirwaySchedule.Bot.WebAPI.Infrastructure.DI
 {
     using Microsoft.Extensions.Configuration;
 
-    using AutoMapper;
     using Autofac;
 
     using AirwaySchedule.Bot.DataAccess.Mongo;
-    using AirwaySchedule.Bot.AdminPanelProcessing.Infrastructure;
-    using AirwaySchedule.Bot.AdminPanelProcessing.Interfaces;
-    using AirwaySchedule.Bot.AdminPanelProcessing.Services;
     using BotProcessing.Interfaces.Services;
     using BotProcessing.Interfaces.Services.Commands;
     using AirwaySchedule.Bot.BotProcessing.Services;
     using AirwaySchedule.Bot.BotProcessing.Services.Commands;
-    using AirwaySchedule.Bot.DataAccess;
-    using AirwaySchedule.Bot.DataAccess.Filter;
     using AirwaySchedule.Bot.DataAccess.Interfaces;
-    using AirwaySchedule.Bot.DataAccess.Interfaces.Filter;
     using AirwaySchedule.Bot.DataAccess.Repositories;
     using AirwaySchedule.Bot.IntegrationProxy.Infrastructure;
     using AirwaySchedule.Bot.IntegrationProxy.Services;
@@ -44,16 +37,6 @@ namespace AirwaySchedule.Bot.WebAPI.Infrastructure.DI
         /// <param name="connectionString">connectionString</param>
         public static void AddServices(this ContainerBuilder builder, string connectionString)
         {
-            var config = new MapperConfiguration(cfg =>
-            {
-                cfg.AddProfile<AdminPanelMappingProfile>();
-            });
-
-            var mapper = config.CreateMapper();
-            builder.Register(x => mapper).SingleInstance();
-
-            builder.RegisterType<PlaneService>().As<IPlaneService>();
-
             builder.RegisterType<CommandInvokerService>().As<ICommandInvokerService>();
             builder.RegisterType<ScheduleCommandService>().As<IScheduleCommandService>();
             builder.RegisterType<PlaneDetailsCommandService>().As<IPlaneDetailsCommandService>();
@@ -65,7 +48,6 @@ namespace AirwaySchedule.Bot.WebAPI.Infrastructure.DI
             builder.RegisterType<YandexApiProxy>().As<IYandexApiProxy>();
             builder.RegisterType<IataApiProxy>().As<IIataApiProxy>();
             builder.RegisterType<RestSharpHelper>().As<IRestSharpHelper>();
-            builder.RegisterType<FilterPipelineBuilder>().As<IFilterPipelineBuilder>();
 
             builder.RegisterType<PlaneRepository>().As<IPlaneRepository>();
             builder.Register(x => new AirwayScheduleContext(connectionString)).InstancePerLifetimeScope();

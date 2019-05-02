@@ -5,17 +5,14 @@
 namespace AirwaySchedule.Bot.DataAccess.Repositories
 {
     using System;
-    using System.Collections.Generic;
     using System.Linq;
 
     using MongoDB.Bson;
     using MongoDB.Driver;
 
-    using AirwaySchedule.Bot.Common.FilterModels;
     using AirwaySchedule.Bot.DataAccess.Mongo;
     using AirwaySchedule.Bot.DataAccess.Entities;
     using AirwaySchedule.Bot.DataAccess.Interfaces;
-    using AirwaySchedule.Bot.DataAccess.Interfaces.Filter;
 
     /// <summary>
     /// PlaneRepository
@@ -23,17 +20,14 @@ namespace AirwaySchedule.Bot.DataAccess.Repositories
     public class PlaneRepository : IPlaneRepository
     {
         private readonly AirwayScheduleContext _context;
-        private readonly IFilterPipelineBuilder _filterPipelineBuilder;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PlaneRepository"/> class.
         /// </summary>
         /// <param name="context">context</param>
-        /// <param name="filterPipelineBuilder">filterPipelineBuilder</param>
-        public PlaneRepository(AirwayScheduleContext context, IFilterPipelineBuilder filterPipelineBuilder)
+        public PlaneRepository(AirwayScheduleContext context)
         {
             _context = context;
-            _filterPipelineBuilder = filterPipelineBuilder;
         }
 
         /// <summary>
@@ -68,34 +62,12 @@ namespace AirwaySchedule.Bot.DataAccess.Repositories
         }
 
         /// <summary>
-        /// GetFilteredList
-        /// </summary>
-        /// <param name="searchKey">searchKey</param>
-        /// <param name="pagingInfo">pagingInfo</param>
-        /// <returns>IEnumerable</returns>
-        public IEnumerable<Plane> GetFilteredList(string searchKey, PagingInfo pagingInfo)
-        {
-            var filterPipeline = BuildFilterPipeline(searchKey, pagingInfo);
-            var planes = _context.Planes.AsQueryable();
-
-            return filterPipeline.Execute(planes).ToList();
-        }
-
-        /// <summary>
         /// Remove
         /// </summary>
         /// <param name="id">id</param>
         public void Remove(string id)
         {
             _context.Planes.DeleteOne(new BsonDocument("_id", new ObjectId(id)));
-        }
-
-        private IFilterPipeline BuildFilterPipeline(string searchKey, PagingInfo pagingInfo)
-        {
-            _filterPipelineBuilder.AddSearchFilter(searchKey);
-            _filterPipelineBuilder.AddPagingFilter(pagingInfo);
-
-            return _filterPipelineBuilder.GetFilterPipeline();
         }
     }
 }

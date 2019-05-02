@@ -4,8 +4,6 @@
 
 namespace AirwaySchedule.Bot.DataAccess.Interfaces
 {
-    using System.Collections.Generic;
-    using AirwaySchedule.Bot.Common.FilterModels;
     using AirwaySchedule.Bot.DataAccess.Entities;
 
     /// <summary>
@@ -13,14 +11,6 @@ namespace AirwaySchedule.Bot.DataAccess.Interfaces
     /// </summary>
     public interface IPlaneRepository
     {
-        /// <summary>
-        /// GetFilteredList
-        /// </summary>
-        /// <param name="searchKey">searchKey</param>
-        /// <param name="pagingInfo">pagingInfo</param>
-        /// <returns>IEnumerable</returns>
-        IEnumerable<Plane> GetFilteredList(string searchKey, PagingInfo pagingInfo);
-
         /// <summary>
         /// FindByName
         /// </summary>
