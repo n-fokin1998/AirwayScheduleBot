@@ -83,11 +83,6 @@ namespace AirwaySchedule.Bot.WebAPI
                 c.SwaggerDoc("v1", new Info { Title = "My API", Version = "v1" });
             });
 
-            services.AddSpaStaticFiles(configuration =>
-            {
-                configuration.RootPath = "ClientApp/dist";
-            });
-
             builder.Populate(services);
             Container = builder.Build();
 
@@ -116,24 +111,11 @@ namespace AirwaySchedule.Bot.WebAPI
                 app.UseExceptionHandler("/Error");
             }
 
-            app.UseStaticFiles();
-            app.UseSpaStaticFiles();
-
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
                     name: "default",
                     template: "{controller}/{action=Index}/{id?}");
-            });
-
-            app.UseSpa(spa =>
-            {
-                spa.Options.SourcePath = "ClientApp";
-
-                if (env.IsDevelopment())
-                {
-                    spa.UseAngularCliServer(npmScript: "start");
-                }
             });
         }
 

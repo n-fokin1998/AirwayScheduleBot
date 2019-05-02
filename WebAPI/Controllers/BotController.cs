@@ -47,13 +47,7 @@ namespace AirwaySchedule.Bot.WebAPI.Controllers
                 var chatId = update.CallbackQuery?.Message.Chat.Id ?? update.Message.Chat.Id;
                 var messageText = update.CallbackQuery?.Data ?? update.Message.Text;
 
-                try
-                {
-                    await _commandInvokerService.ExecuteCommandAsync(chatId, messageText);
-                }
-                catch
-                {
-                }
+                await _commandInvokerService.ExecuteCommandAsync(chatId, messageText);
             }
         }
     }
