@@ -43,7 +43,7 @@ namespace AirwaySchedule.Bot.BotProcessing.Services.Commands
         /// <returns>Task</returns>
         public async Task ExecuteAsync(long chatId, Command command)
         {
-            var responseModel = _planeRepository.FindByName(command.Text);
+            var responseModel = _planeRepository.GetByName(command.Text);
 
             if (responseModel == null)
             {
@@ -59,8 +59,8 @@ namespace AirwaySchedule.Bot.BotProcessing.Services.Commands
         {
             var response = $"Model: {responseModel.Name}\n" +
                            $"Number of seats: {responseModel.Seats}\n" +
-                           $"Speed: {responseModel.Speed}\n" +
-                           $"Range of flight: {responseModel.Range}";
+                           $"Speed: {responseModel.Speed} km/h.\n" +
+                           $"Range of flight: {responseModel.Range} km.";
 
             return response;
         }

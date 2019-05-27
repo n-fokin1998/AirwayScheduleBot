@@ -28,5 +28,20 @@ namespace AirwaySchedule.Bot.Common.Utils
         /// PlaneDetailsCommand
         /// </summary>
         public const string PlaneDetailsCommand = "/plane";
+
+        /// <summary>
+        /// HelpCommand
+        /// </summary>
+        public const string HelpCommand = "/help";
+
+        /// <summary>
+        /// SendByEmailCommand
+        /// </summary>
+        public const string SendByEmailCommand = "/sendemail";
+
+        /// <summary>
+        /// SendByEmailCommand
+        /// </summary>
+        public const string SetEmailCommand = "/setemail";
     }
 }

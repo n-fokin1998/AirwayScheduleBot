@@ -5,6 +5,8 @@
 namespace AirwaySchedule.Bot.BotProcessing.Services.Commands
 {
     using System;
+    using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
 
     using Telegram.Bot;
@@ -74,7 +76,7 @@ namespace AirwaySchedule.Bot.BotProcessing.Services.Commands
         {
             foreach (var segment in responseModel.Segments)
             {
-                var res =
+                var message =
                     $"Flight: {segment.Thread.Title}\n" +
                     $"Flight number: {segment.Thread.Number}\n" +
                     $"Departure: {segment.DeparturePoint.Title}\n" +
@@ -85,15 +87,29 @@ namespace AirwaySchedule.Bot.BotProcessing.Services.Commands
                     $"Site: {segment.Thread.Carrier.Url}\n" +
                     $"Plane: {segment.Thread.Vehicle}";
 
-                await _telegramBotClient.SendTextMessageAsync(
-                    chatId,
-                    res,
-                    disableWebPagePreview: true,
-                    replyMarkup: new InlineKeyboardMarkup(new InlineKeyboardButton
+                var markupButtons = new List<InlineKeyboardButton>
+                {
+                    new InlineKeyboardButton
                     {
                         Text = "Plane info",
                         CallbackData = $"{CommandNames.PlaneDetailsCommand} {segment.Thread.Vehicle}"
-                    }));
+                    }
+                };
+
+                if (responseModel.Segments.Last() == segment)
+                {
+                    markupButtons.Add(new InlineKeyboardButton
+                    {
+                        Text = "Send results by email",
+                        CallbackData = $"{CommandNames.SendByEmailCommand}"
+                    });
+                }
+
+                await _telegramBotClient.SendTextMessageAsync(
+                    chatId,
+                    message,
+                    disableWebPagePreview: true,
+                    replyMarkup: new InlineKeyboardMarkup(markupButtons));
             }
         }
     }

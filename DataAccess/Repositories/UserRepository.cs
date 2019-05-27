@@ -1,31 +1,30 @@
-﻿// <copyright file="PlaneRepository.cs" company="Kharkiv National Aerospace University">
+﻿// <copyright file="UserRepository.cs" company="Kharkiv National Aerospace University">
 // Copyright (c) Kharkiv National Aerospace University. All rights reserved.
 // </copyright>
 
 namespace AirwaySchedule.Bot.DataAccess.Repositories
 {
-    using System;
     using System.Linq;
 
     using MongoDB.Bson;
     using MongoDB.Driver;
 
-    using AirwaySchedule.Bot.DataAccess.Mongo;
     using AirwaySchedule.Bot.DataAccess.Entities;
+    using AirwaySchedule.Bot.DataAccess.Mongo;
     using AirwaySchedule.Bot.DataAccess.Interfaces;
 
     /// <summary>
-    /// PlaneRepository
+    /// UserRepository
     /// </summary>
-    public class PlaneRepository : IPlaneRepository
+    public class UserRepository : IUserRepository
     {
         private readonly AirwayScheduleContext _context;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PlaneRepository"/> class.
+        /// Initializes a new instance of the <see cref="UserRepository"/> class.
         /// </summary>
         /// <param name="context">context</param>
-        public PlaneRepository(AirwayScheduleContext context)
+        public UserRepository(AirwayScheduleContext context)
         {
             _context = context;
         }
@@ -34,31 +33,31 @@ namespace AirwaySchedule.Bot.DataAccess.Repositories
         /// Add
         /// </summary>
         /// <param name="item">item</param>
-        public void Add(Plane item)
+        public void Add(User item)
         {
-            _context.Planes.InsertOne(item);
+            _context.Users.InsertOne(item);
         }
 
         /// <summary>
         /// Edit
         /// </summary>
         /// <param name="item">item</param>
-        public void Edit(Plane item)
+        public void Edit(User item)
         {
-            _context.Planes.ReplaceOne(new BsonDocument("_id", new ObjectId(item.Id)), item);
+            _context.Users.ReplaceOne(new BsonDocument("_id", new ObjectId(item.Id)), item);
         }
 
         /// <summary>
-        /// GetByName
+        /// GetById
         /// </summary>
-        /// <param name="name">name</param>
-        /// <returns>Plane</returns>
-        public Plane GetByName(string name)
+        /// <param name="userId">userId</param>
+        /// <returns>User</returns>
+        public User GetById(long userId)
         {
-            var plane = _context.Planes.AsQueryable()
-                .FirstOrDefault(x => x.Name.ToLower() == name.ToLower().Trim());
+            var user = _context.Users.AsQueryable()
+                .FirstOrDefault(x => x.UserId == userId);
 
-            return plane;
+            return user;
         }
 
         /// <summary>
@@ -67,7 +66,7 @@ namespace AirwaySchedule.Bot.DataAccess.Repositories
         /// <param name="id">id</param>
         public void Remove(string id)
         {
-            _context.Planes.DeleteOne(new BsonDocument("_id", new ObjectId(id)));
+            _context.Users.DeleteOne(new BsonDocument("_id", new ObjectId(id)));
         }
     }
 }

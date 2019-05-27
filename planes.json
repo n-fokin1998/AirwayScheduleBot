@@ -1,0 +1,58 @@
+{"planeId":1,"name":"Boeing 737-200","seats":"136","range":"2600","speed":"817"}
+{"planeId":2,"name":"Boeing 737-300","seats":"149","range":"2255","speed":"807"}
+{"planeId":3,"name":"Boeing 737-400","seats":"188","range":"2060","speed":"807"}
+{"planeId":4,"name":"Boeing 737-500","seats":"145","range":"2375","speed":"807"}
+{"planeId":5,"name":"Boeing 737-600","seats":"149","range":"3050","speed":"852"}
+{"planeId":6,"name":"Boeing 737-700","seats":"149","range":"3260","speed":"852"}
+{"planeId":7,"name":"Boeing 737-800","seats":"189","range":"2940","speed":"852"}
+{"planeId":8,"name":"Boeing 737-900","seats":"220","range":"2458","speed":"852"}
+{"planeId":9,"name":"Boeing 737 MAX 7","seats":"172","range":"3825","speed":"852"}
+{"planeId":10,"name":"Boeing 737 MAX 8","seats":"200","range":"3515","speed":"852"}
+{"planeId":11,"name":"Boeing 737 MAX 9","seats":"220","range":"3515","speed":"852"}
+{"planeId":12,"name":"Boeing 737 MAX 10","seats":"230","range":"3215","speed":"852"}
+{"planeId":13,"name":"Boeing 747-400ER","seats":"660","range":"7670","speed":"917"}
+{"planeId":14,"name":"Boeing 747-8","seats":"605","range":"7730","speed":"917"}
+{"planeId":15,"name":"Boeing 757-200","seats":"239","range":"3915","speed":"850"}
+{"planeId":16,"name":"Boeing 757-300","seats":"295","range":"3400","speed":"850"}
+{"planeId":17,"name":"Boeing 767-200","seats":"290","range":"3900","speed":"851"}
+{"planeId":18,"name":"Boeing 767-200ER","seats":"290","range":"6590","speed":"851"}
+{"planeId":19,"name":"Boeing 767-300","seats":"351","range":"3900","speed":"851"}
+{"planeId":20,"name":"Boeing 767-300ER","seats":"351","range":"5980","speed":"851"}
+{"planeId":21,"name":"Boeing 767-400ER","seats":"375","range":"5625","speed":"851"}
+{"planeId":22,"name":"Boeing 777-200","seats":"440","range":"5240","speed":"905"}
+{"planeId":23,"name":"Boeing 777-200ER","seats":"440","range":"7065","speed":"905"}
+{"planeId":24,"name":"Boeing 777-200LR","seats":"440","range":"8555","speed":"905"}
+{"planeId":25,"name":"Boeing 777-300","seats":"550","range":"6030","speed":"905"}
+{"planeId":26,"name":"Boeing 777-300ER","seats":"550","range":"7370","speed":"905"}
+{"planeId":27,"name":"Boeing 787-8","seats":"381","range":"7355","speed":"905"}
+{"planeId":28,"name":"Boeing 787-9","seats":"420","range":"7635","speed":"905"}
+{"planeId":29,"name":"Boeing 787-10","seats":"440","range":"6430","speed":"905"}
+{"planeId":30,"name":"Airbus A318","seats":"136","range":"3100","speed":"828"}
+{"planeId":31,"name":"Airbus A319","seats":"160","range":"3750","speed":"828"}
+{"planeId":32,"name":"Airbus A320","seats":"190","range":"3300","speed":"840"}
+{"planeId":33,"name":"Airbus A321","seats":"230","range":"3200","speed":"828"}
+{"planeId":34,"name":"Airbus A330-200","seats":"406","range":"7250","speed":"871"}
+{"planeId":35,"name":"Airbus A330-300","seats":"440","range":"6350","speed":"871"}
+{"planeId":36,"name":"Airbus A340-200","seats":"420","range":"6700","speed":"890"}
+{"planeId":37,"name":"Airbus A340-300","seats":"440","range":"7300","speed":"871"}
+{"planeId":38,"name":"Airbus A340-500","seats":"375","range":"9000","speed":"881"}
+{"planeId":39,"name":"Airbus A340-600","seats":"475","range":"7800","speed":"881"}
+{"planeId":40,"name":"Airbus A350-900","seats":"440","range":"8100","speed":"905"}
+{"planeId":41,"name":"Airbus A350-1000","seats":"440","range":"7950","speed":"903"}
+{"planeId":42,"name":"Airbus A380-800","seats":"868","range":"8200","speed":"1050"}
+{"planeId":43,"name":"Bombardier CRJ-100","seats":"50","range":"1305","speed":"786"}
+{"planeId":44,"name":"Bombardier CRJ-200","seats":"50","range":"1345","speed":"786"}
+{"planeId":45,"name":"Bombardier CRJ-700","seats":"78","range":"1378","speed":"786"}
+{"planeId":46,"name":"Bombardier CRJ-900","seats":"90","range":"1553","speed":"786"}
+{"planeId":47,"name":"Bombardier CRJ-1000","seats":"104","range":"1622","speed":"786"}
+{"planeId":48,"name":"Bombardier Q200","seats":"40","range":"1125","speed":"667"}
+{"planeId":49,"name":"Bombardier Q300","seats":"56","range":"924","speed":"667"}
+{"planeId":50,"name":"Bombardier Q400","seats":"90","range":"1100","speed":"667"}
+{"planeId":51,"name":"EMB-120","seats":"30","range":"1750","speed":"667"}
+{"planeId":52,"name":"Embraer ERJ135","seats":"37","range":"1300","speed":"834"}
+{"planeId":53,"name":"Embraer ERJ140","seats":"44","range":"1250","speed":"834"}
+{"planeId":54,"name":"Embraer ERJ145","seats":"50","range":"1550","speed":"834"}
+{"planeId":55,"name":"Embraer 170","seats":"78","range":"2150","speed":"829"}
+{"planeId":56,"name":"Embraer 175","seats":"88","range":"2200","speed":"829"}
+{"planeId":57,"name":"Embraer 190","seats":"114","range":"2450","speed":"829"}
+{"planeId":58,"name":"Embraer 195","seats":"124","range":"2300","speed":"829"}

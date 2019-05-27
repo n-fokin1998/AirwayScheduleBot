@@ -25,16 +25,22 @@ namespace AirwaySchedule.Bot.BotProcessing.Services
         /// </summary>
         /// <param name="scheduleCommandService">scheduleCommandService</param>
         /// <param name="planeDetailsCommandService">planeDetailsCommandService</param>
+        /// <param name="helpCommandService">helpCommandService</param>
+        /// <param name="setEmailCommandService">setEmailCommandService</param>
         public CommandInvokerService(
             IScheduleCommandService scheduleCommandService,
-            IPlaneDetailsCommandService planeDetailsCommandService)
+            IPlaneDetailsCommandService planeDetailsCommandService,
+            IHelpCommandService helpCommandService,
+            ISetEmailCommandService setEmailCommandService)
         {
             _commands = new Dictionary<string, ICommandService>
             {
                 { CommandNames.ScheduleByIataCommand, scheduleCommandService },
                 { CommandNames.ScheduleByCityCommand, scheduleCommandService },
                 { CommandNames.ScheduleByAirportCommand, scheduleCommandService },
-                { CommandNames.PlaneDetailsCommand, planeDetailsCommandService }
+                { CommandNames.PlaneDetailsCommand, planeDetailsCommandService },
+                { CommandNames.HelpCommand, helpCommandService },
+                { CommandNames.SetEmailCommand, setEmailCommandService }
             };
         }
 

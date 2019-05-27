@@ -1,4 +1,4 @@
-﻿// <copyright file="IPlaneRepository.cs" company="Kharkiv National Aerospace University">
+﻿// <copyright file="IUserRepository.cs" company="Kharkiv National Aerospace University">
 // Copyright (c) Kharkiv National Aerospace University. All rights reserved.
 // </copyright>
 
@@ -7,28 +7,28 @@ namespace AirwaySchedule.Bot.DataAccess.Interfaces
     using AirwaySchedule.Bot.DataAccess.Entities;
 
     /// <summary>
-    /// IPlaneRepository
+    /// IUserRepository
     /// </summary>
-    public interface IPlaneRepository
+    public interface IUserRepository
     {
         /// <summary>
-        /// GetByName
+        /// GetById
         /// </summary>
-        /// <param name="name">name</param>
-        /// <returns>Plane</returns>
-        Plane GetByName(string name);
+        /// <param name="userId">userId</param>
+        /// <returns>User</returns>
+        User GetById(long userId);
 
         /// <summary>
         /// Add
         /// </summary>
         /// <param name="item">item</param>
-        void Add(Plane item);
+        void Add(User item);
 
         /// <summary>
         /// Edit
         /// </summary>
         /// <param name="item">item</param>
-        void Edit(Plane item);
+        void Edit(User item);
 
         /// <summary>
         /// Remove

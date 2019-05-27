@@ -16,7 +16,11 @@ namespace AirwaySchedule.Bot.BotProcessing.Extensions
         /// <returns>string</returns>
         public static string GetCommandName(this string message)
         {
-            return message.Substring(0, message.IndexOf(' '));
+            var commandNameIndex = message.IndexOf(' ');
+
+            return commandNameIndex != -1
+                ? message.Substring(0, message.IndexOf(' '))
+                : message;
         }
 
         /// <summary>
@@ -26,7 +30,11 @@ namespace AirwaySchedule.Bot.BotProcessing.Extensions
         /// <returns>string</returns>
         public static string GetCommandText(this string message)
         {
-            return message.Substring(message.IndexOf(' '));
+            var commandTextIndex = message.IndexOf(' ');
+
+            return commandTextIndex != -1
+                ? message.Substring(message.IndexOf(' '))
+                : null;
         }
 
         /// <summary>

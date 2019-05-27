@@ -8,7 +8,6 @@ namespace AirwaySchedule.Bot.WebAPI.Controllers
 
     using Microsoft.AspNetCore.Mvc;
 
-    using Telegram.Bot;
     using Telegram.Bot.Types;
     using Telegram.Bot.Types.Enums;
 
@@ -20,18 +19,16 @@ namespace AirwaySchedule.Bot.WebAPI.Controllers
     [Route("api/[controller]")]
     public class BotController : Controller
     {
+        private static int _updateId;
         private readonly ICommandInvokerService _commandInvokerService;
-        private readonly ITelegramBotClient _botClient;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BotController"/> class.
         /// </summary>
         /// <param name="commandInvokerService">commandInvokerService</param>
-        /// <param name="botClient">botClient</param>
-        public BotController(ICommandInvokerService commandInvokerService, ITelegramBotClient botClient)
+        public BotController(ICommandInvokerService commandInvokerService)
         {
             _commandInvokerService = commandInvokerService;
-            _botClient = botClient;
         }
 
         /// <summary>
@@ -42,7 +39,14 @@ namespace AirwaySchedule.Bot.WebAPI.Controllers
         [HttpPost("update")]
         public async Task Update([FromBody]Update update)
         {
-            if (update != null && (update.CallbackQuery != null || update.Message.Type == MessageType.Text))
+            if (update == null || update.Id == _updateId)
+            {
+                return;
+            }
+
+            _updateId = update.Id;
+
+            if (update.CallbackQuery != null || update.Message.Type == MessageType.Text)
             {
                 var chatId = update.CallbackQuery?.Message.Chat.Id ?? update.Message.Chat.Id;
                 var messageText = update.CallbackQuery?.Data ?? update.Message.Text;

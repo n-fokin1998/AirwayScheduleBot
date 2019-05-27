@@ -5,6 +5,7 @@
 namespace AirwaySchedule.Bot.DataAccess.Mongo
 {
     using System;
+    using System.Linq;
 
     using MongoDB.Driver;
 
@@ -16,8 +17,10 @@ namespace AirwaySchedule.Bot.DataAccess.Mongo
     public class AirwayScheduleContext
     {
         private const string PlanesCollectionName = "planes";
+        private const string UsersCollectionName = "users";
 
         private readonly Lazy<IMongoCollection<Plane>> _planesCollection;
+        private readonly Lazy<IMongoCollection<User>> _usersCollection;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AirwayScheduleContext"/> class.
@@ -31,11 +34,18 @@ namespace AirwaySchedule.Bot.DataAccess.Mongo
 
             _planesCollection = new Lazy<IMongoCollection<Plane>>(
                 () => database.GetCollection<Plane>(PlanesCollectionName));
+            _usersCollection = new Lazy<IMongoCollection<User>>(
+                () => database.GetCollection<User>(UsersCollectionName));
         }
 
         /// <summary>
         /// Planes
         /// </summary>
         public IMongoCollection<Plane> Planes => _planesCollection.Value;
+
+        /// <summary>
+        /// Users
+        /// </summary>
+        public IMongoCollection<User> Users => _usersCollection.Value;
     }
 }

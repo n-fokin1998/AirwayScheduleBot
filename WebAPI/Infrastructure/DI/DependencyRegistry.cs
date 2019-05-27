@@ -40,6 +40,9 @@ namespace AirwaySchedule.Bot.WebAPI.Infrastructure.DI
             builder.RegisterType<CommandInvokerService>().As<ICommandInvokerService>();
             builder.RegisterType<ScheduleCommandService>().As<IScheduleCommandService>();
             builder.RegisterType<PlaneDetailsCommandService>().As<IPlaneDetailsCommandService>();
+            builder.RegisterType<HelpCommandService>().As<IHelpCommandService>();
+            builder.RegisterType<SetEmailCommandService>().As<ISetEmailCommandService>();
+
             builder.RegisterType<ScheduleRequestCreator>().As<IScheduleRequestCreator>();
             builder.RegisterType<RequestByIataStrategy>().Keyed<IScheduleRequestStrategy>(CommandNames.ScheduleByIataCommand);
             builder.RegisterType<RequestByCityStrategy>().Keyed<IScheduleRequestStrategy>(CommandNames.ScheduleByCityCommand);
@@ -50,6 +53,7 @@ namespace AirwaySchedule.Bot.WebAPI.Infrastructure.DI
             builder.RegisterType<RestSharpHelper>().As<IRestSharpHelper>();
 
             builder.RegisterType<PlaneRepository>().As<IPlaneRepository>();
+            builder.RegisterType<UserRepository>().As<IUserRepository>();
             builder.Register(x => new AirwayScheduleContext(connectionString)).InstancePerLifetimeScope();
         }
 
