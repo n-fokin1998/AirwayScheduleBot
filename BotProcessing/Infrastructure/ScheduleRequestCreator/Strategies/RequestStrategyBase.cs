@@ -45,7 +45,7 @@ namespace AirwaySchedule.Bot.BotProcessing.Infrastructure.ScheduleRequestCreator
                 throw new BotCommandException(chatId, DateFormatErrorMessage);
             }
 
-            requestModel.DateFrom = fromDate;
+            requestModel.Date = fromDate;
 
             return requestModel;
         }

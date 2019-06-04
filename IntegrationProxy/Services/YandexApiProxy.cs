@@ -70,7 +70,7 @@ namespace AirwaySchedule.Bot.IntegrationProxy.Services
                 { "lang", _configuration.Language },
                 { "transport_types", _configuration.TransportType },
                 { "system", _configuration.System },
-                { "date", requestParameters.DateFrom.ToIsoString() }
+                { "date", requestParameters.Date.ToIsoString() }
             };
 
             return parameters;

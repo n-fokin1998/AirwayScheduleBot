@@ -24,6 +24,9 @@ namespace AirwaySchedule.Bot.WebAPI.Infrastructure.DI
     using AirwaySchedule.Bot.BotProcessing.Infrastructure.ScheduleRequestCreator.Strategies;
     using BotProcessing.Interfaces.Infrastructure.ScheduleRequestCreator;
     using AirwaySchedule.Bot.Common.Utils;
+    using AirwaySchedule.Bot.BotProcessing.Infrastructure;
+    using AirwaySchedule.Bot.BotProcessing.Interfaces.Infrastructure;
+    using AirwaySchedule.Bot.Common.Models;
 
     /// <summary>
     /// DependencyRegistry
@@ -42,6 +45,7 @@ namespace AirwaySchedule.Bot.WebAPI.Infrastructure.DI
             builder.RegisterType<PlaneDetailsCommandService>().As<IPlaneDetailsCommandService>();
             builder.RegisterType<HelpCommandService>().As<IHelpCommandService>();
             builder.RegisterType<SetEmailCommandService>().As<ISetEmailCommandService>();
+            builder.RegisterType<SendByEmailCommandService>().As<ISendByEmailCommandService>();
 
             builder.RegisterType<ScheduleRequestCreator>().As<IScheduleRequestCreator>();
             builder.RegisterType<RequestByIataStrategy>().Keyed<IScheduleRequestStrategy>(CommandNames.ScheduleByIataCommand);
@@ -51,6 +55,8 @@ namespace AirwaySchedule.Bot.WebAPI.Infrastructure.DI
             builder.RegisterType<YandexApiProxy>().As<IYandexApiProxy>();
             builder.RegisterType<IataApiProxy>().As<IIataApiProxy>();
             builder.RegisterType<RestSharpHelper>().As<IRestSharpHelper>();
+            builder.RegisterType<MessageSender>().As<IMessageSender>();
+            builder.RegisterType<EmailService>().As<IEmailService>();
 
             builder.RegisterType<PlaneRepository>().As<IPlaneRepository>();
             builder.RegisterType<UserRepository>().As<IUserRepository>();
@@ -66,9 +72,11 @@ namespace AirwaySchedule.Bot.WebAPI.Infrastructure.DI
         {
             var yandexApiConfig = configuration.GetSection(nameof(YandexApiConfiguration)).Get<YandexApiConfiguration>();
             var iataApiConfig = configuration.GetSection(nameof(IataApiConfiguration)).Get<IataApiConfiguration>();
+            var emailSenderConfig = configuration.GetSection(nameof(EmailSenderConfiguration)).Get<EmailSenderConfiguration>();
 
             builder.Register(x => yandexApiConfig).SingleInstance();
             builder.Register(x => iataApiConfig).SingleInstance();
+            builder.Register(x => emailSenderConfig).SingleInstance();
         }
     }
 }

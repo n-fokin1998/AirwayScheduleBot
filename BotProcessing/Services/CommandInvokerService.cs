@@ -27,11 +27,13 @@ namespace AirwaySchedule.Bot.BotProcessing.Services
         /// <param name="planeDetailsCommandService">planeDetailsCommandService</param>
         /// <param name="helpCommandService">helpCommandService</param>
         /// <param name="setEmailCommandService">setEmailCommandService</param>
+        /// <param name="sendByEmailCommandService">sendByEmailCommandService</param>
         public CommandInvokerService(
             IScheduleCommandService scheduleCommandService,
             IPlaneDetailsCommandService planeDetailsCommandService,
             IHelpCommandService helpCommandService,
-            ISetEmailCommandService setEmailCommandService)
+            ISetEmailCommandService setEmailCommandService,
+            ISendByEmailCommandService sendByEmailCommandService)
         {
             _commands = new Dictionary<string, ICommandService>
             {
@@ -40,7 +42,8 @@ namespace AirwaySchedule.Bot.BotProcessing.Services
                 { CommandNames.ScheduleByAirportCommand, scheduleCommandService },
                 { CommandNames.PlaneDetailsCommand, planeDetailsCommandService },
                 { CommandNames.HelpCommand, helpCommandService },
-                { CommandNames.SetEmailCommand, setEmailCommandService }
+                { CommandNames.SetEmailCommand, setEmailCommandService },
+                { CommandNames.SendByEmailCommand, sendByEmailCommandService }
             };
         }
 

@@ -22,13 +22,8 @@ namespace AirwaySchedule.Bot.Common.Models
         public string Destination { get; set; }
 
         /// <summary>
-        /// DateFrom
+        /// Date
         /// </summary>
-        public DateTime DateFrom { get; set; }
-
-        /// <summary>
-        /// DateTo
-        /// </summary>
-        public DateTime? DateTo { get; set; }
+        public DateTime Date { get; set; }
     }
 }
