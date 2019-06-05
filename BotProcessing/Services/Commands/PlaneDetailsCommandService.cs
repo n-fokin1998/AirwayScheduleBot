@@ -19,7 +19,7 @@ namespace AirwaySchedule.Bot.BotProcessing.Services.Commands
     /// </summary>
     public class PlaneDetailsCommandService : IPlaneDetailsCommandService
     {
-        private const string PlaneNotFoundErrorMessage = "Plane not found";
+        private const string PlaneNotFoundErrorMessage = "😢 Plane not found";
 
         private readonly IPlaneRepository _planeRepository;
         private readonly ITelegramBotClient _telegramBotClient;
@@ -57,10 +57,10 @@ namespace AirwaySchedule.Bot.BotProcessing.Services.Commands
 
         private string BuildResponseMessage(Plane responseModel)
         {
-            var response = $"Model: {responseModel.Name}\n" +
-                           $"Number of seats: {responseModel.Seats}\n" +
-                           $"Speed: {responseModel.Speed} km/h.\n" +
-                           $"Range of flight: {responseModel.Range} km.";
+            var response = $"⭐ Model: {responseModel.Name}\n" +
+                           $"  Number of seats: {responseModel.Seats}\n" +
+                           $"  Speed: {responseModel.Speed} km/h.\n" +
+                           $"  Range of flight: {responseModel.Range} km.";
 
             return response;
         }

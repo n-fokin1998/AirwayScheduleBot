@@ -26,9 +26,9 @@ namespace AirwaySchedule.Bot.BotProcessing.Services.Commands
     /// </summary>
     public class SendByEmailCommandService : ISendByEmailCommandService
     {
-        private const string ApiErrorMessage = "Something went wrong";
-        private const string SendEmailErrorMessage = "Failed to send email";
-        private const string EmailNotFoundErrorMessage = "Email not set. Use /setemail command to set your email.";
+        private const string ApiErrorMessage = "😢 Something went wrong";
+        private const string SendEmailErrorMessage = "😢 Failed to send email";
+        private const string EmailNotFoundErrorMessage = "❗ Email not set. Use /setemail command to set your email.";
 
         private readonly ITelegramBotClient _telegramBotClient;
         private readonly IUserRepository _userRepository;
@@ -99,12 +99,12 @@ namespace AirwaySchedule.Bot.BotProcessing.Services.Commands
             {
                 _emailService.SendScheduleLetter(responseModel, user.Email);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw new BotCommandException(chatId, ex.Message);
+                throw new BotCommandException(chatId, SendEmailErrorMessage);
             }
 
-            await _telegramBotClient.SendTextMessageAsync(chatId, "Email successfully sent.");
+            await _telegramBotClient.SendTextMessageAsync(chatId, "✅ Email successfully sent.");
         }
     }
 }

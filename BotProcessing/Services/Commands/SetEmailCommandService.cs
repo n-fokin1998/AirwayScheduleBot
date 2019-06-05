@@ -21,7 +21,7 @@ namespace AirwaySchedule.Bot.BotProcessing.Services.Commands
     /// </summary>
     public class SetEmailCommandService : ISetEmailCommandService
     {
-        private const string EmailNotValidErrorMessage = "Email not valid!";
+        private const string EmailNotValidErrorMessage = "😒 Email not valid!";
 
         private readonly ITelegramBotClient _telegramBotClient;
         private readonly IUserRepository _userRepository;
@@ -67,7 +67,7 @@ namespace AirwaySchedule.Bot.BotProcessing.Services.Commands
                 });
             }
 
-            await _telegramBotClient.SendTextMessageAsync(chatId, "Email successfully set");
+            await _telegramBotClient.SendTextMessageAsync(chatId, "✅ Email successfully set");
         }
 
         private bool IsValidEmail(string email)

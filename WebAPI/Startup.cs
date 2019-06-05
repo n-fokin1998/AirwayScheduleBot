@@ -126,7 +126,7 @@ namespace AirwaySchedule.Bot.WebAPI
             var botClient = new TelegramBotClient(Configuration["TelegramBotConfiguration:Token"]);
 
             // ngrok http localhost:50208 -host-header=localhost
-            botClient.SetWebhookAsync("https://aad87f5e.ngrok.io/api/bot/update").Wait();
+            botClient.SetWebhookAsync("https://769f2730.ngrok.io/api/bot/update").Wait();
             _logger.LogInformation("Created bot client with Id: " + botClient.BotId);
 
             return botClient;

@@ -27,7 +27,7 @@ namespace AirwaySchedule.Bot.WebAPI.Filters
                 var telegramBotClient =
                     (ITelegramBotClient)context.HttpContext.RequestServices.GetService(typeof(ITelegramBotClient));
 
-                await telegramBotClient.SendTextMessageAsync(serviceException.ChatId, serviceException.Message);
+                await telegramBotClient.SendTextMessageAsync(serviceException.ChatId, context.Exception.Message);
 
                 context.Result = new OkResult();
             }

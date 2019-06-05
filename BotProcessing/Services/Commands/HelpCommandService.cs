@@ -36,8 +36,9 @@ namespace AirwaySchedule.Bot.BotProcessing.Services.Commands
         public async Task ExecuteAsync(long chatId, Command command)
         {
             var message =
-                "Airway Schedule Bot commands:\n\n" +
-                "/plane [plane_name] - Get plane info for specified plane model\n\n" +
+                "ℹ️ Airway Schedule Bot commands:\n\n" +
+                "/plane [plane_name] - Get plane info for specified plane model\n" +
+                "/setemail [email] - Save your email for sending search results\n\n" +
                 "Commands that allow you to get flight schedule from departure point to destination point on specified date:\n\n" +
                 "/iata [departure destination date] - Departure and destination points should be specified as IATA codes\n" +
                 "/city [departure destination date] - Departure and destination points should be specified as city name in international format\n" +

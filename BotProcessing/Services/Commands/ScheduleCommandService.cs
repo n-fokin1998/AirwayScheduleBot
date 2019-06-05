@@ -6,7 +6,6 @@ namespace AirwaySchedule.Bot.BotProcessing.Services.Commands
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Threading.Tasks;
 
     using Microsoft.Extensions.Caching.Memory;
@@ -32,7 +31,7 @@ namespace AirwaySchedule.Bot.BotProcessing.Services.Commands
     public class ScheduleCommandService : IScheduleCommandService
     {
         private const int CacheExpirationTime = 5;
-        private const string ApiErrorMessage = "Something went wrong";
+        private const string ApiErrorMessage = "😢 Something went wrong";
 
         private readonly IYandexApiProxy _yandexApiProxy;
         private readonly IScheduleRequestCreator _requestCreator;
@@ -97,15 +96,15 @@ namespace AirwaySchedule.Bot.BotProcessing.Services.Commands
             foreach (var segment in responseModel.Segments)
             {
                 var message =
-                    $"Flight: {segment.Thread.Title}\n" +
-                    $"Flight number: {segment.Thread.Number}\n" +
-                    $"Departure: {segment.DeparturePoint.Title}\n" +
-                    $"Arrival: {segment.ArrivalPoint.Title}\n" +
-                    $"Departure date: {segment.Departure.ToShortDateString() + " " + segment.Departure.ToShortTimeString()}\n" +
-                    $"Arrival date: {segment.Arrival.ToShortDateString() + " " + segment.Arrival.ToShortTimeString()}\n" +
-                    $"Airline: {segment.Thread.Carrier.Title}\n" +
-                    $"Site: {segment.Thread.Carrier.Url}\n" +
-                    $"Plane: {segment.Thread.Vehicle}";
+                    $"✈️ Flight: {segment.Thread.Title}\n" +
+                    $"✅ Flight number: {segment.Thread.Number}\n" +
+                    $"🚩 Departure: {segment.DeparturePoint.Title}\n" +
+                    $"🏁 Arrival: {segment.ArrivalPoint.Title}\n" +
+                    $"📅 Departure date: {segment.Departure.ToShortDateString() + " " + segment.Departure.ToShortTimeString()}\n" +
+                    $"🗓️ Arrival date: {segment.Arrival.ToShortDateString() + " " + segment.Arrival.ToShortTimeString()}\n" +
+                    $"↔️ Airline: {segment.Thread.Carrier.Title}\n" +
+                    $"🌐 Site: {segment.Thread.Carrier.Url}\n" +
+                    $"🚀 Plane: {segment.Thread.Vehicle}";
 
                 var markupButtons = new List<InlineKeyboardButton>
                 {
@@ -116,22 +115,22 @@ namespace AirwaySchedule.Bot.BotProcessing.Services.Commands
                     }
                 };
 
-                if (responseModel.Segments.Last() == segment)
-                {
-                    markupButtons.Add(new InlineKeyboardButton
-                    {
-                        Text = "Send results by email",
-                        CallbackData =
-                            $"{CommandNames.SendByEmailCommand} {requestModel.Departure} {requestModel.Destination} {requestModel.Date.ToIsoString()}"
-                    });
-                }
-
                 await _telegramBotClient.SendTextMessageAsync(
                     chatId,
                     message,
                     disableWebPagePreview: true,
                     replyMarkup: new InlineKeyboardMarkup(markupButtons));
             }
+
+            await _telegramBotClient.SendTextMessageAsync(
+                chatId,
+                "✉️ ✉️ ✉️",
+                replyMarkup: new InlineKeyboardMarkup(new InlineKeyboardButton
+                {
+                    Text = "Send results by email",
+                    CallbackData =
+                        $"{CommandNames.SendByEmailCommand} {requestModel.Departure} {requestModel.Destination} {requestModel.Date.ToIsoString()}"
+                }));
         }
     }
 }
