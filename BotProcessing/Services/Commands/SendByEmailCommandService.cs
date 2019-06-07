@@ -70,6 +70,13 @@ namespace AirwaySchedule.Bot.BotProcessing.Services.Commands
         /// <returns>Task</returns>
         public async Task ExecuteAsync(long chatId, Command command)
         {
+            var user = _userRepository.GetById(chatId);
+
+            if (user == null)
+            {
+                throw new BotCommandException(chatId, EmailNotFoundErrorMessage);
+            }
+
             _memoryCache.TryGetValue(chatId, out YandexApiResponse responseModel);
 
             if (responseModel == null)
@@ -86,13 +93,6 @@ namespace AirwaySchedule.Bot.BotProcessing.Services.Commands
                 {
                     throw new BotCommandException(chatId, ApiErrorMessage);
                 }
-            }
-
-            var user = _userRepository.GetById(chatId);
-
-            if (user == null)
-            {
-                throw new BotCommandException(chatId, EmailNotFoundErrorMessage);
             }
 
             try

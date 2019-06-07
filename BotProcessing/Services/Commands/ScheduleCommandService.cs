@@ -93,6 +93,13 @@ namespace AirwaySchedule.Bot.BotProcessing.Services.Commands
             RequestParameters requestModel,
             YandexApiResponse responseModel)
         {
+            if (responseModel.Segments.Count == 0)
+            {
+                await _telegramBotClient.SendTextMessageAsync(chatId, "🤷‍♂️ Flights not found");
+
+                return;
+            }
+
             foreach (var segment in responseModel.Segments)
             {
                 var message =
@@ -102,9 +109,9 @@ namespace AirwaySchedule.Bot.BotProcessing.Services.Commands
                     $"🏁 Arrival: {segment.ArrivalPoint.Title}\n" +
                     $"📅 Departure date: {segment.Departure.ToShortDateString() + " " + segment.Departure.ToShortTimeString()}\n" +
                     $"🗓️ Arrival date: {segment.Arrival.ToShortDateString() + " " + segment.Arrival.ToShortTimeString()}\n" +
-                    $"↔️ Airline: {segment.Thread.Carrier.Title}\n" +
-                    $"🌐 Site: {segment.Thread.Carrier.Url}\n" +
-                    $"🚀 Plane: {segment.Thread.Vehicle}";
+                    $"↔️ Airline: {segment.Thread.Carrier.Title ?? "-"}\n" +
+                    $"🌐 Site: {segment.Thread.Carrier.Url ?? "-"}\n" +
+                    $"🚀 Plane: {segment.Thread.Vehicle ?? "-"}";
 
                 var markupButtons = new List<InlineKeyboardButton>
                 {

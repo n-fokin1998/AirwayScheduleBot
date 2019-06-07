@@ -16,8 +16,8 @@ namespace AirwaySchedule.Bot.BotProcessing.Infrastructure.ScheduleRequestCreator
     /// </summary>
     public class RequestStrategyBase
     {
-        private const string DateFormatErrorMessage = "Invalid date format";
-        private const string CommandFormatErrorMessage = "Invalid command format";
+        private const string DateFormatErrorMessage = "😒 Invalid date format";
+        private const string CommandFormatErrorMessage = "😒 Invalid command format";
 
         /// <summary>
         /// CreateRequest
